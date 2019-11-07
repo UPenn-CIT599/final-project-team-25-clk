@@ -8,10 +8,8 @@ public class Loan {
 	private String creditGrading;
 	private Date startingDate;
 	private int tenure;
-	private AmortizationSchedule amortization;
 	
 	public Loan(HashMap<String, String> existingLoanDetail) {
-		
-		this.amortization = new AmortizationSchedule(existingLoanDetail);
+
 	}
 } 
