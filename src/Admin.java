@@ -1,27 +1,37 @@
 
 public class Admin {
+	/**
+	 * constructor
+	 */
 	public Admin() {
-		
+
 	}
-	
+
 	/**
-	 * approve loan
+	 * approve a loan application
 	 */
-	public void approveLoan() {
-		
+	public void approveLoan(LoanApplication loanApplication) {
+
 	}
-	
+
 	/**
-	 * terminate loan by customer.
+	 * terminate loan for customer.
 	 */
-	public void terminateLoan() {
-		
+	public void terminateLoan(Loan loan) {
+
 	}
-	
+
 	/**
 	 * generate a credit grading for customer.
 	 */
-	public void generateCreditGrading() {
-		
+	public void generateCreditGrading(Customer customer) {
+
+	}
+
+	/**
+	 * can impose penalty fee on specific loans
+	 */
+	public void imposePenaltyFee(Loan loan) {
+
 	}
 }

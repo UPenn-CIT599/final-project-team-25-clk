@@ -2,6 +2,11 @@ import java.util.*;
 
 public class Main {
 
+	/**
+	 * main method
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		UserInterface ui = new UserInterface();
 		Storage storage = new Storage();
@@ -16,30 +21,28 @@ public class Main {
 			currentCustomer = new Customer(customerDetail);
 			storage.storeCustomer(currentCustomer);
 		} else {
-			
+
 			String id = ui.promptLogin();
 			currentCustomer = storage.getCustomer(id);
 		}
-		
+
 		boolean quit = false;
-		
+
 		while (!quit) {
 			action = ui.promptCustomerInstruction();
-			
+
 			if (action.equals("1")) {
-				currentCustomer.applyLoan();
+				// currentCustomer.applyLoan();
 			} else if (action.equals("2")) {
-				currentCustomer.manageLoan();
+				// currentCustomer.manageLoan();
 			} else if (action.equals("3")) {
 				System.out.println("See you");
 				quit = true;
 			} else {
 				System.out.println("Unrecognised action.");
 			}
-			
+
 		}
-		
-		
 
 	}
 
