@@ -3,6 +3,9 @@ import java.util.*;
 public class UserInterface {
 	private Scanner in;
 
+	/**
+	 * constructor
+	 */
 	public UserInterface() {
 		this.in = new Scanner(System.in);
 	}

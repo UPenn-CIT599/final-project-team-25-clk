@@ -24,22 +24,42 @@ public class Payment {
 		this.paymentMadeForEachMonth = pem;
 	}
 
+	/**
+	 * get monthly payment for principal
+	 * @return
+	 */
 	public double getMonthlyPaymentForPrincipal() {
 		return monthlyPaymentForPrincipal;
 	}
 
+	/**
+	 * get monthly payment for interest.
+	 * @return
+	 */
 	public double getMonthlyPaymentForInterest() {
 		return monthlyPaymentForInterest;
 	}
 
+	/**
+	 * get monthly payment total.
+	 * @return
+	 */
 	public double getMonthlyPaymentTotal() {
 		return monthlyPaymentTotal;
 	}
 
+	/**
+	 * return get pay or default.
+	 * @return
+	 */
 	public boolean getPayOrDefault() {
 		return payOrDefault;
 	}
 
+	/**
+	 * get payment made for each month
+	 * @return
+	 */
 	public double getPaymentMadeForEachMonth() {
 		return paymentMadeForEachMonth;
 	}

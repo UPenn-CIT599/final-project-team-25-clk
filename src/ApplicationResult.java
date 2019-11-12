@@ -52,6 +52,11 @@ public class ApplicationResult {
 		return isCustomerApprovedforLoan;
 	}
 	
+	/**
+	 * calculate interest rates given credit scores
+	 * @param pennCLKScore
+	 * @return
+	 */
 	public double calculateInterestRates (double pennCLKScore) {
 		double databaseInterestRates = 0.0;
 		double averageDatabaseInterestRates = 0.0;
