@@ -23,6 +23,15 @@ public class Loan {
 
 	}
 	
+	/**
+	 * constructors for loans
+	 * @param loanId
+	 * @param customerId
+	 * @param interestRates
+	 * @param loanAmount
+	 * @param tenure
+	 * @param startingDate
+	 */
 	public Loan(int loanId, int customerId, double interestRates, double loanAmount, int tenure, String startingDate) {
 		this.loanId = loanId; 
 		this.customerId = customerId;
@@ -36,89 +45,91 @@ public class Loan {
 		}
 	}
 	
+	/**
+	 * calculate total interest over the life of the loan.
+	 * @return
+	 */
 	public double calculateTotalInterest() {
 		double totalInterest;
 		totalInterest = loanAmount * (interestRates / 12) * tenure;
 		return totalInterest;
 	}
 	
+	/**
+	 * months left until the loan matures
+	 * @return
+	 */
 	public int monthsRemainingToMaturity() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		Calendar cal = Calendar.getInstance();
-		
-		// we have today's date
-		System.out.println(dateFormat.format(cal.getTime()));
-		
+		Calendar today = Calendar.getInstance();
+	
 		
 		// we need tenure + startingDate to get end date.
-		Calendar endingCal = Calendar.getInstance();
-		endingCal.setTime(this.startingDate);
-		endingCal.add(Calendar.MONTH, this.tenure);
+		Calendar endingDate = Calendar.getInstance();
+		endingDate.setTime(this.startingDate);
+		endingDate.add(Calendar.MONTH, this.tenure);
 		
-		
-		
-		System.out.println(dateFormat.format(endingCal.getTime()));
+
 	
-		int daysBetween = (int) ChronoUnit.DAYS.between(cal.toInstant(), endingCal.toInstant());
-		System.out.println(daysBetween);
+		int daysBetween = (int) ChronoUnit.DAYS.between(today.toInstant(), endingDate.toInstant());
 		int monthsBetween = (int) Math.round(daysBetween / 30 * 100.0 / 100.0);
-		System.out.println(monthsBetween);
 		return monthsBetween;
 	}
 
+	/**
+	 * get loan amount
+	 * @return
+	 */
 	public double getLoanAmount() {
 		return loanAmount;
 	}
 
-	public void setLoanAmount(double loanAmount) {
-		this.loanAmount = loanAmount;
-	}
-
+	/**
+	 * get loan ID
+	 * @return
+	 */
 	public int getLoanId() {
 		return loanId;
 	}
 
-	public void setLoanId(int loanId) {
-		this.loanId = loanId;
-	}
-
+	/**
+	 * get customer id
+	 * @return
+	 */
 	public int getCustomerId() {
 		return customerId;
 	}
 
-	public void setCustomerId(int customerId) {
-		this.customerId = customerId;
-	}
-
+	/**
+	 * get interest rates
+	 * @return
+	 */
 	public double getInterestRates() {
 		return interestRates;
 	}
 
-	public void setInterestRates(double interestRates) {
-		this.interestRates = interestRates;
-	}
-
+	/**
+	 * get credit grading.
+	 * @return
+	 */
 	public String getCreditGrading() {
 		return creditGrading;
 	}
 
-	public void setCreditGrading(String creditGrading) {
-		this.creditGrading = creditGrading;
-	}
-
+	/**
+	 * get starting date
+	 * @return
+	 */
 	public Date getStartingDate() {
 		return startingDate;
 	}
 
-	public void setStartingDate(Date startingDate) {
-		this.startingDate = startingDate;
-	}
-
+	/**
+	 * get tenure in months.
+	 * @return
+	 */
 	public int getTenure() {
 		return tenure;
 	}
 
-	public void setTenure(int tenure) {
-		this.tenure = tenure;
-	}
 } 
