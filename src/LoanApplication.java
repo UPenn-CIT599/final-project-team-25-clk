@@ -15,11 +15,19 @@ public class LoanApplication {
 	private double allocatedCreditLimit;
 	private Date firstCreditCardDate;
 	private int inquireBorrowingEligibilityTimes;
-
+	
+	/**
+	 * constructor.
+	 */
 	public LoanApplication() {
 
 	}
 
+	/**
+	 * loan application form inputted
+	 * @param loanApplicationDetail
+	 * @param userId
+	 */
 	public LoanApplication(HashMap loanApplicationDetail, int userId) {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");

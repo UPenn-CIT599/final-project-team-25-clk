@@ -45,10 +45,5 @@ public class Loan {
 		}
 		return monthToPayment;	
 	}
-	
-	public static void main(String[] args) {
-		Loan a = new Loan();
-		DecimalFormat df = new DecimalFormat("##.00");
-		System.out.println(df.format(a.monthlyPayment(20000, 0.075, 60)));
-	}
+
 }
