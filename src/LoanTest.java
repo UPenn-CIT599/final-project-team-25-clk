@@ -4,6 +4,8 @@ import java.text.DecimalFormat;
 
 import org.junit.jupiter.api.Test;
 
+import model.Loan;
+
 class LoanTest {
 
 	@Test

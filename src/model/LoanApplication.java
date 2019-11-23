@@ -1,9 +1,15 @@
+package model;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
-public class LoanApplication {
+public class LoanApplication implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6248986646073694934L;
 	private int loanApplicationId;
 	private int customerId;
 	private double loanAmount;
@@ -19,8 +25,13 @@ public class LoanApplication {
 	/**
 	 * constructor.
 	 */
-	public LoanApplication() {
-
+	public LoanApplication(int loanApplicationId, double loanAmount, int loanDuration, String reasonForApplying, Date today, int customerId) {
+		this.loanApplicationId = loanApplicationId + 1;
+		this.loanAmount = loanAmount;
+		this.loanDuration = loanDuration;
+		this.reasonForApplying = reasonForApplying;
+		this.applicationDate = today;
+		this.customerId = customerId;
 	}
 
 	/**
@@ -28,58 +39,7 @@ public class LoanApplication {
 	 * @param loanApplicationDetail
 	 * @param userId
 	 */
-	public LoanApplication(HashMap loanApplicationDetail, int userId) {
-
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
-		// required info
-		if (loanApplicationDetail.containsKey("loanAmount")) {
-			this.loanAmount = Double.parseDouble((String) loanApplicationDetail.get("loanAmount"));
-		}
-
-		// required info
-		if (loanApplicationDetail.containsKey("loanDuration")) {
-			this.loanDuration = Integer.parseInt((String) loanApplicationDetail.get("loanDuration"));
-		}
-
-		if (loanApplicationDetail.containsKey("reasonForApplying")) {
-			this.reasonForApplying = (String) loanApplicationDetail.get("reasonForApplying");
-		}
-
-		if (loanApplicationDetail.containsKey("creditCardSpendingThisMonth")) {
-			this.creditCardSpendingThisMonth = Double
-					.parseDouble((String) loanApplicationDetail.get("creditCardSpendingThisMonth"));
-		}
-
-		if (loanApplicationDetail.containsKey("lastDefaultDate")) {
-			try {
-				this.lastDefaultDate = sdf.parse((String) loanApplicationDetail.get("lastDefaultDate"));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-		}
-
-		if (loanApplicationDetail.containsKey("allocatedCreditLimit")) {
-			this.allocatedCreditLimit = Double.parseDouble((String) loanApplicationDetail.get("allocatedCreditLimit"));
-		}
-
-		if (loanApplicationDetail.containsKey("firstCreditCardDate")) {
-			try {
-				this.firstCreditCardDate = sdf.parse((String) loanApplicationDetail.get("firstCreditCardDate"));
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-		}
-
-		if (loanApplicationDetail.containsKey("inquireBorrowingEligibilityTimes")) {
-			this.inquireBorrowingEligibilityTimes = Integer
-					.parseInt((String) loanApplicationDetail.get("inquireBorrowingEligibilityTimes"));
-		}
-
-		this.applicationDate = new Date();
-		this.customerId = userId;
-		this.loanApplicationId = 1;
-	}
+	
 
 	/**
 	 * get loan application id

@@ -1,5 +1,9 @@
 import java.util.ArrayList;
 
+import model.Customer;
+import model.Loan;
+import model.LoanApplication;
+
 public class Storage {
 	
 	/**

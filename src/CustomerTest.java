@@ -7,6 +7,9 @@ import java.util.Date;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import model.Customer;
+import model.LoanApplication;
+
 class CustomerTest {
 
 	@Test

@@ -1,6 +1,8 @@
 import java.io.File;
 import java.util.ArrayList;
 
+import model.Customer;
+
 public class ApplicationResult {
 
 

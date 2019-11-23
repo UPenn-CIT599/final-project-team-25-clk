@@ -1,3 +1,6 @@
+import model.Customer;
+import model.Loan;
+import model.LoanApplication;
 
 public class Admin {
 	/**
