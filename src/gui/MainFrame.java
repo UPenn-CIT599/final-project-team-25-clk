@@ -15,11 +15,15 @@ import javax.swing.SwingConstants;
 import eventobject.ExistingUserListener;
 import eventobject.LoanApplicationForm;
 import eventobject.LoanApplicationListener;
+import eventobject.LoanPaymentListener;
+import eventobject.LoanSelectionListener;
 import eventobject.NewUserForm;
 import eventobject.NewUserFormListener;
 import model.Customer;
 import model.Database;
+import model.Loan;
 import model.LoanApplication;
+import model.Payment;
 
 public class MainFrame extends JFrame {
 	// panels
@@ -27,10 +31,12 @@ public class MainFrame extends JFrame {
 	private ExistingUserPane existingUserPane;
 	private LoanApplicationPane loanApplicationPane;
 	private ManageLoanPane manageLoanPane;
+	private LoanPane loanPane;
 	
-	// controllers and model.
+	// database and model.
 	private Database database;
 	private Customer currentCustomer;
+	private Loan currentLoan;
 	private LoanApplication currentloanApplication;
 	
 	public MainFrame() {
@@ -38,33 +44,29 @@ public class MainFrame extends JFrame {
 		
 		Database database = new Database();
 		
-		
-		
-		
 		// load all loan, loan application and customer on to database.
 		
 		try {
 			database.loadCustomerFromFile();
-			
-			//database.loadLoanFromFile();
+			database.loadLoanApplicationFromFile();
+			database.loadLoanFromFile();
+			database.loadPaymentFromFile();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		try {
-			database.loadLoanApplicationFromFile();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		
 		setLayout(new BorderLayout());
 		
 		newUserPane = new NewUserPane();
-		existingUserPane = new ExistingUserPane(database.getCustomers());
+		existingUserPane = new ExistingUserPane(database);
 		JLabel welcome = new JLabel("Welcome to Loan Simulator");
-		JTabbedPane tabbedPane = new JTabbedPane();
 		loanApplicationPane = new LoanApplicationPane();
+		loanPane = new LoanPane(database);
+		
+		
+		JTabbedPane tabbedPane = new JTabbedPane();
+		
 		
 		
 		
@@ -72,8 +74,8 @@ public class MainFrame extends JFrame {
 		tabbedPane.add("New User", newUserPane);
 		tabbedPane.add("Select User", existingUserPane);
 		tabbedPane.add("Loan Application", loanApplicationPane);
-		//tabbedPane.add("Select Loan", loanPane);
-		//tabbedPane.add("Manage Loan", manageLoanPane);
+		tabbedPane.add("Select Loan", loanPane);
+		
 
 		newUserPane.setFormListener(new NewUserFormListener() {
 			public void formEventOccurred(NewUserForm ev) {
@@ -86,24 +88,65 @@ public class MainFrame extends JFrame {
 				currentCustomer  = database.getCustomer(userId);
 				existingUserPane.repaintWithCurrentCustomer(currentCustomer);
 				
-				// mock approved loan.
+				
+				// mock approved loan. For now , it is created when we select a random user. It creates a 150k loan for them.
 				HashMap<String, String> loanInfo = new HashMap();
 				loanInfo.put("principal", "150000");
 				loanInfo.put("rate", "12");
 				loanInfo.put("loanPeriod", "24");
 				loanInfo.put("monthlyPayment", "2500");
-				loanInfo.put("customerId", "6");
-				database.addLoan(loanInfo, currentCustomer);
+				loanInfo.put("customerId", Integer.toString(currentCustomer.getUserId()));
+				database.addLoan(loanInfo);
+				
 			}
 		});
 		
 		loanApplicationPane.setFormListener(new LoanApplicationListener() {
 			public void formEventOccurred(LoanApplicationForm ev) {
-				System.out.println(currentCustomer.getName());
+				//System.out.println(currentCustomer.getName());
 				database.addLoanApplication(ev, currentCustomer);
 			
 			}
 		});
+		
+		loanPane.setFormListener(new LoanSelectionListener() {
+			public void loanSelectionOccured(int loanId) {
+				currentLoan = database.getLoan(loanId);
+				loanPane.repaintWithCurrentLoan(currentLoan);
+				
+				List<Payment> payments = database.getPaymentsByLoanId(1);
+				for (Payment p : payments) {
+					System.out.println(p.getMonthlyPaymentForInterest());
+				}
+				manageLoanPane = new ManageLoanPane();
+				manageLoanPane.setData(database.getPaymentsByLoanId(1));
+				tabbedPane.add("Manage Loan", manageLoanPane);
+				
+				/// NOW mocked list of payments.
+//				for (int i = 0; i < 40; i++) {
+//					HashMap<String, String> paymentInfo = new HashMap();
+//		
+//					paymentInfo.put("monthlyPaymentForPrincipal", "1000");
+//					paymentInfo.put("monthlyPaymentForInterest", "100");
+//					paymentInfo.put("monthlyPaymentTotal", "1100");
+//					paymentInfo.put("payOrDefault", "true");
+//					paymentInfo.put("paymentMadeForEachMonth", "1100");
+//					paymentInfo.put("loanId", "1");
+//					
+//					database.addPayment(paymentInfo);
+//					
+//				}
+			}
+			
+		});
+		
+		
+		loanPane.setPaymentListener(new LoanPaymentListener() {
+			public void loanPaymentOccured(double amount) {
+				currentLoan.payInstalment(amount);
+			}
+		});
+			
 
 		
 		

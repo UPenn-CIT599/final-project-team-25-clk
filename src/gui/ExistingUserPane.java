@@ -24,9 +24,10 @@ public class ExistingUserPane extends JPanel implements ActionListener {
 	private Database database;
 	private ExistingUserListener listener;
 	
-	public ExistingUserPane(List<Customer> customers) {
+	public ExistingUserPane(Database database) {
 		setLayout(new BorderLayout());
-		database = new Database();
+		
+		List<Customer> customers = database.getCustomers();
 		userSelection = new JComboBox<Item>();
 		DefaultComboBoxModel<Item> userSelectionModel = new DefaultComboBoxModel<Item>();
 		

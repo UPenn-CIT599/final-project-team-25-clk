@@ -6,9 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 public class LoanApplication implements Serializable {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 6248986646073694934L;
 	private int loanApplicationId;
 	private int customerId;
@@ -34,11 +32,6 @@ public class LoanApplication implements Serializable {
 		this.customerId = customerId;
 	}
 
-	/**
-	 * loan application form inputted
-	 * @param loanApplicationDetail
-	 * @param userId
-	 */
 	
 
 	/**

@@ -14,6 +14,7 @@ import eventobject.LoanApplicationForm;
 import eventobject.LoanApplicationListener;
 import eventobject.NewUserForm;
 import eventobject.NewUserFormListener;
+import model.Database;
 
 public class LoanApplicationPane extends JPanel {
 	private JLabel loanAmountLabel;
@@ -72,7 +73,7 @@ public class LoanApplicationPane extends JPanel {
 		add(loanAmountLabel, gc);
 
 		// coordinate (1,0)
-		gc.gridx = 2;
+		gc.gridx = 1;
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(loanAmountField, gc);
 		

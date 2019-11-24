@@ -1,12 +1,16 @@
+package model;
 
-public class Payment {
+import java.io.Serializable;
+
+public class Payment implements Serializable {
 	
+	private static final long serialVersionUID = -344518404443198875L;
 	private double monthlyPaymentForPrincipal;
 	private double monthlyPaymentForInterest;
 	private double monthlyPaymentTotal;
 	private boolean payOrDefault;
 	private double paymentMadeForEachMonth;
-	
+	private int loanId;
 	
 	//method to get totalmonthlyPayment
 	double total;
@@ -16,12 +20,13 @@ public class Payment {
 	}
 		
 	//construct Payment
-	public Payment(double mp, double mi, double t, boolean pd, double pem) {
+	public Payment(double mp, double mi, double t, boolean pd, double pem, int loanId) {
 		this.monthlyPaymentForPrincipal = mp;
 		this.monthlyPaymentForInterest = mi;
 		this.monthlyPaymentTotal = t;
 		this.payOrDefault = pd;
 		this.paymentMadeForEachMonth = pem;
+		this.loanId = loanId;
 	}
 
 	/**
@@ -30,6 +35,10 @@ public class Payment {
 	 */
 	public double getMonthlyPaymentForPrincipal() {
 		return monthlyPaymentForPrincipal;
+	}
+
+	public int getLoanId() {
+		return loanId;
 	}
 
 	/**

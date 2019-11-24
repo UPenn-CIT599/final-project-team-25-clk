@@ -1,11 +1,11 @@
 package model;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 
-import Payment;
-
-public class Loan {
+public class Loan implements Serializable {
 	
+	private static final long serialVersionUID = -3405617888750938390L;
 	private int loanId;
 	private double principal;
 	private double rate;
@@ -82,6 +82,10 @@ public class Loan {
 
 	public double getMi() {
 		return mi;
+	}
+	
+	public void payInstalment(double amount) {
+		System.out.println("from loan model: " + amount);
 	}
 
 	

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import Storage;
-
 public class Customer implements Serializable {
 
 	private static final long serialVersionUID = -3634930368104200041L;

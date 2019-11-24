@@ -18,14 +18,18 @@ import eventobject.NewUserForm;
 import gui.MainFrame;
 
 public class Database {
+	
+	/// these are the four things we need to save into file.
 	private List<Customer> customers;
 	private List<LoanApplication> loanApplications;
 	private List<Loan> loans;
+	private List<Payment> payments;
 	
 	public Database() {
 		customers = new LinkedList<Customer>();
 		loanApplications = new LinkedList<LoanApplication>();
 		loans = new LinkedList<Loan>();
+		payments = new LinkedList<Payment>();
 	}
 	
 	/////////////////// STORAGE FOR CUSTOMERS //////////////////////////
@@ -106,26 +110,24 @@ public class Database {
 	
 	/////////////////// STORAGE FOR LOAN //////////////////////////
 	
-	public void addLoan(HashMap<String, String>loanInfo, Customer customer ) {
-		int max = loans.size();
-//		loanInfo.get()
-//		
-//		
-//		double loanAmount = Double.parseDouble(ev.getLoanApplicationAmount()); 
-//		int loanDuration = Integer.parseInt(ev.getLoanApplicationDuration());
-//		String reasonForApplying = ev.getReason();
-//		Date today = new Date();
-//		
-//		LoanApplication loanApplication = new LoanApplication(loanAmount, loanDuration, reasonForApplying, today, customer.getUserId());
-//		
-//		loanApplications.add(loanApplication);
-//		
-//		try {
-//			saveLoanApplicationToFile();
-//			loadLoanApplicationFromFile();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+	public void addLoan(HashMap<String, String>loanInfo) {
+		int loanId = loans.size() + 1;
+		double principal = Double.parseDouble(loanInfo.get("principal"));
+		double rate = Double.parseDouble(loanInfo.get("rate"));
+		int loanPeriod = Integer.parseInt(loanInfo.get("loanPeriod"));
+		double monthlyPayment = Double.parseDouble(loanInfo.get("monthlyPayment"));
+		int customerId = Integer.parseInt(loanInfo.get("customerId"));
+		
+		
+		Loan loan = new Loan(loanId, principal, rate, loanPeriod, monthlyPayment, customerId);
+		loans.add(loan);
+		
+		try {
+			saveLoanToFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public Loan getLoan(int loanID) {
@@ -137,6 +139,10 @@ public class Database {
 			}
 		}
 		return null;
+	}
+	
+	public List<Loan> getLoans() {
+		return loans;
 	}
 	
 	public List<Loan> getLoanByCustomerId(int customerId) {
@@ -151,9 +157,37 @@ public class Database {
 		return result;
 	}
 	
+	public List<Payment> getPaymentsByLoanId(int loanId) {
+		List<Payment> result = new LinkedList();
+		Iterator i = payments.iterator();
+		while (i.hasNext()) {
+			Payment payment = (Payment) i.next();
+			if (loanId == payment.getLoanId()) {
+				result.add(payment);
+			}
+		}
+		return result;
+	}
 	
-	
-	
+	public void addPayment(HashMap<String, String> paymentInfo) {
+		double monthlyPaymentForPrincipal = Double.parseDouble(paymentInfo.get("monthlyPaymentForPrincipal"));
+		double monthlyPaymentForInterest = Double.parseDouble(paymentInfo.get("monthlyPaymentForInterest"));
+		double monthlyPaymentTotal = Double.parseDouble(paymentInfo.get("monthlyPaymentTotal"));
+		boolean payOrDefault = Boolean.parseBoolean(paymentInfo.get("payOrDefault"));
+		double paymentMadeForEachMonth = Double.parseDouble(paymentInfo.get("paymentMadeForEachMonth"));
+		int loanId = Integer.parseInt(paymentInfo.get("loanId"));
+		
+		
+		Payment payment = new Payment(monthlyPaymentForPrincipal, monthlyPaymentForInterest,
+				monthlyPaymentTotal, payOrDefault, paymentMadeForEachMonth, loanId);
+		payments.add(payment);
+		
+		try {
+			savePaymentToFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	
 	
@@ -204,9 +238,6 @@ public class Database {
 		
 		try {
 			LoanApplication[] loanApplicationArr = (LoanApplication[]) ois2.readObject();
-			for (LoanApplication c : loanApplicationArr) {
-				System.out.println(c.getLoanAmount());
-			}
 			loanApplications.clear();
 			loanApplications.addAll(Arrays.asList(loanApplicationArr));
 		} catch (ClassNotFoundException e) {
@@ -239,5 +270,30 @@ public class Database {
 		}
 		
 		ois3.close();
+	}
+	
+	public void savePaymentToFile() throws IOException {
+		FileOutputStream fos4 = new FileOutputStream("C:\\Users\\chian\\Documents\\payment");
+		ObjectOutputStream oos4 = new ObjectOutputStream(fos4);
+		
+		Payment[] paymentArr = payments.toArray(new Payment[payments.size()]) ;
+		
+		oos4.writeObject(paymentArr);
+		oos4.close();
+	}
+	
+	public void loadPaymentFromFile() throws IOException {
+		FileInputStream fis4 = new FileInputStream("C:\\Users\\chian\\Documents\\payment");
+		ObjectInputStream ois4 = new ObjectInputStream(fis4);
+		
+		try {
+			Payment[] paymentArr = (Payment[]) ois4.readObject();
+			payments.clear();
+			payments.addAll(Arrays.asList(paymentArr));
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		ois4.close();
 	}
 }
