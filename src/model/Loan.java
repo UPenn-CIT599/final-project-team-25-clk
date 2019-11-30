@@ -1,7 +1,10 @@
 package model;
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class Loan implements Serializable {
 	
@@ -11,22 +14,65 @@ public class Loan implements Serializable {
 	private double rate;
 	private int loanPeriod;
 	private double monthlyPayment;
+	private ArrayList<Payment> payments;
 	
-	private int customerId;
-	
+	/**
+	 * constructor for loan.
+	 * @param loanId
+	 * @param principal
+	 * @param rate
+	 * @param loanPeriod
+	 * @param monthlyPayment
+	 */
 	public Loan(int loanId, double principal, double rate, 
-			int loanPeriod, double monthlyPayment, int customerId) {
+			int loanPeriod, double monthlyPayment) {
 		this.loanId = loanId;
 		this.principal = principal;
 		this.rate = rate;
 		this.loanPeriod = loanPeriod;
 		this.monthlyPayment = monthlyPayment;
-		this.customerId = customerId;
+		this.payments = new ArrayList<Payment>();
 	}
 	
-	//private Customer c;
-	//private Payment p;
-	//private HashMap<Integer, Payment> monthToPayment;
+	
+	// storage for payments.
+	public void addPayment(HashMap<String, String> paymentInfo) {
+		double monthlyPaymentForPrincipal = Double.parseDouble(paymentInfo.get("monthlyPaymentForPrincipal"));
+		double monthlyPaymentForInterest = Double.parseDouble(paymentInfo.get("monthlyPaymentForInterest"));
+		double monthlyPaymentTotal = Double.parseDouble(paymentInfo.get("monthlyPaymentTotal"));
+		boolean payOrDefault = Boolean.parseBoolean(paymentInfo.get("payOrDefault"));
+		double paymentMadeForEachMonth = Double.parseDouble(paymentInfo.get("paymentMadeForEachMonth"));
+		int paymentId = payments.size();
+		
+		Payment payment = new Payment(monthlyPaymentForPrincipal, monthlyPaymentForInterest,
+				monthlyPaymentTotal, payOrDefault, paymentMadeForEachMonth, paymentId);
+		this.payments.add(payment);
+	}
+	
+	public void updatePaymentForTheMonth(double amount, int index) {
+		payments.get(index).setPaymentMadeForEachMonth(amount);
+	}
+	
+	// without index, set update payment for last month.
+	public void updatePaymentForTheMonth(double amount) {
+		payments.get(payments.size() - 1).setPaymentMadeForEachMonth(amount);
+	}
+	
+	public ArrayList<Payment> getPayments() {
+		return payments;
+	}
+	
+	public Payment getPayment(int paymentId) {
+		Iterator i = payments.iterator();
+		while (i.hasNext()) {
+			Payment payment = (Payment) i.next();
+			if (paymentId == payment.getPaymentId()) {
+				return payment;
+			}
+		}
+		return null;
+	}
+	
 	
 	//method to calculate monthly payment
 	double mp;
@@ -70,10 +116,6 @@ public class Loan implements Serializable {
 	}
 
 
-	public int getCustomerId() {
-		return customerId;
-	}
-
 
 	public double getMp() {
 		return mp;
@@ -84,10 +126,6 @@ public class Loan implements Serializable {
 		return mi;
 	}
 	
-	public void payInstalment(double amount) {
-		System.out.println("from loan model: " + amount);
-	}
-
 	
 	//hashmap for the loan schedule
 	/*

@@ -10,7 +10,7 @@ public class Payment implements Serializable {
 	private double monthlyPaymentTotal;
 	private boolean payOrDefault;
 	private double paymentMadeForEachMonth;
-	private int loanId;
+	private int paymentId;
 	
 	//method to get totalmonthlyPayment
 	double total;
@@ -20,13 +20,26 @@ public class Payment implements Serializable {
 	}
 		
 	//construct Payment
-	public Payment(double mp, double mi, double t, boolean pd, double pem, int loanId) {
+	public Payment(double mp, double mi, double t, boolean pd, double pem, int paymentId) {
+		this.paymentId = paymentId;
 		this.monthlyPaymentForPrincipal = mp;
 		this.monthlyPaymentForInterest = mi;
 		this.monthlyPaymentTotal = t;
 		this.payOrDefault = pd;
 		this.paymentMadeForEachMonth = pem;
-		this.loanId = loanId;
+	}
+
+	public int getPaymentId() {
+		return paymentId;
+	}
+
+	public void setPaymentId(int paymentId) {
+		this.paymentId = paymentId;
+	}
+	
+	
+	public void setPaymentMadeForEachMonth(double paymentMadeForEachMonth) {
+		this.paymentMadeForEachMonth = paymentMadeForEachMonth;
 	}
 
 	/**
@@ -37,9 +50,6 @@ public class Payment implements Serializable {
 		return monthlyPaymentForPrincipal;
 	}
 
-	public int getLoanId() {
-		return loanId;
-	}
 
 	/**
 	 * get monthly payment for interest.

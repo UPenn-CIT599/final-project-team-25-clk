@@ -5,6 +5,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -15,18 +17,19 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import eventobject.ExistingUserListener;
-import eventobject.NewUserFormListener;
 import model.Customer;
 import model.Database;
+import model.Loan;
 
 public class ExistingUserPane extends JPanel implements ActionListener {
 	private JComboBox<Item> userSelection;
 	private Database database;
-	private ExistingUserListener listener;
+	private ExistingUserListener existingUserListener;
 	
 	public ExistingUserPane(Database database) {
 		setLayout(new BorderLayout());
 		
+		this.database = database;
 		List<Customer> customers = database.getCustomers();
 		userSelection = new JComboBox<Item>();
 		DefaultComboBoxModel<Item> userSelectionModel = new DefaultComboBoxModel<Item>();
@@ -42,17 +45,32 @@ public class ExistingUserPane extends JPanel implements ActionListener {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		JComboBox cb = (JComboBox)e.getSource();
+		JComboBox<Item> cb = (JComboBox<Item>)e.getSource();
 		Item user = (Item) cb.getSelectedItem();
 		int userId = user.getValue();
-		if (listener != null) {
-			listener.userSelectionOccured(userId);;
+		
+		Customer currentCustomer  = database.getCustomer(userId);
+		database.setCurrentCustomer(currentCustomer);
+
+		// mock approved loan. For now , it is created when we select a random user. It creates a 150k loan for them.
+		HashMap<String, String> loanInfo = new HashMap();
+		loanInfo.put("principal", "150000");
+		loanInfo.put("rate", "12");
+		loanInfo.put("loanPeriod", "24");
+		loanInfo.put("monthlyPayment", "2500");
+		
+		currentCustomer.addLoan(loanInfo);
+		database.updateCustomer(currentCustomer);
+		this.repaintWithCurrentCustomer(currentCustomer);
+		
+		if (existingUserListener != null) {
+			existingUserListener.existingUserSelected();
 		}
+		
 		
 	}
 	
 	public void repaintWithCurrentCustomer(Customer currentCustomer) {
-
 		JPanel userInfo = new JPanel();
 		GridBagLayout gbl = new GridBagLayout();
 		userInfo.setLayout(gbl);
@@ -117,8 +135,8 @@ public class ExistingUserPane extends JPanel implements ActionListener {
 		
 	}
 	
-	public void setFormListener(ExistingUserListener listener) {
-		this.listener = listener;
+	public void setFormListener(ExistingUserListener existingUserListener) {
+		this.existingUserListener = existingUserListener;
 	}
 }
 

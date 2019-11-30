@@ -2,30 +2,35 @@ package gui;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import eventobject.NewUserForm;
-import eventobject.NewUserFormListener;
+import eventobject.LoanSelectionListener;
+import eventobject.NewUserListener;
+import model.Customer;
+import model.Database;
 
 public class NewUserPane extends JPanel {
 	private JLabel nameLabel;
 	private JLabel occupationLabel;
 	private JLabel annualIncomeLabel;
+	private Database database;
+	private NewUserListener newUserListener;
 
 	private JTextField nameField;
 	private JTextField occupationField;
 	private JTextField annualIncomeField;
 	private JButton submit;
-	private NewUserFormListener formListener;
 
-	public NewUserPane() {
+	public NewUserPane(Database database) {
+		this.database = database;
+		
 		nameLabel = new JLabel("Name: ");
 		occupationLabel = new JLabel("Occupation: ");
 		annualIncomeLabel = new JLabel("Annual Income: ");
@@ -37,21 +42,21 @@ public class NewUserPane extends JPanel {
 		submit = new JButton("submit");
 
 		submit.addActionListener(new ActionListener() {	
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String name = nameField.getText();
 				String occupation = occupationField.getText();
 				String annualIncome = annualIncomeField.getText();
-
-				NewUserForm ev = new NewUserForm(this, name, occupation, annualIncome);
-
-				if (formListener != null) {
-					formListener.formEventOccurred(ev);
+				
+				Customer currentCustomer = database.addCustomer(name, occupation, annualIncome);
+				database.setCurrentCustomer(currentCustomer);
+				//JOptionPane.showMessageDialog(this.g"Customer created successfully");
+				
+				if (newUserListener != null) {
+					newUserListener.newUserCreatedOccured();
 				}
 			}
 		});
-		
 		layoutComponent();
 	}
 
@@ -108,10 +113,9 @@ public class NewUserPane extends JPanel {
 		gc.anchor = GridBagConstraints.FIRST_LINE_START;
 		add(submit, gc);		
 		
-		
 	}
-
-	public void setFormListener(NewUserFormListener formListener) {
-		this.formListener = formListener;
+	
+	public void setFormListener(NewUserListener newUserListener) {
+		this.newUserListener = newUserListener;
 	}
 }

@@ -9,20 +9,20 @@ import model.Payment;
 
 
 public class PaymentTableModel extends AbstractTableModel {
-	private List<Payment> db;
-	private String[] colNames = {"Monthly Principal", "Monthly Interest", "Monthly Total", "Pay or Default", "Payment", "Loan ID"};
+	private List<Payment> payments;
+	private String[] colNames = {"Monthly Principal", "Monthly Interest", "Monthly Total", "Pay or Default", "Payment", "Payment ID"};
 	
 	public PaymentTableModel() {
 	}
 	
-	public void setData(List<Payment> db) {
-		this.db = db;
+	public void setData(List<Payment> payments) {
+		this.payments = payments;
 	}
 		
 
 	@Override
 	public int getRowCount() {
-		return db.size();
+		return payments.size();
 	}
 
 	@Override
@@ -32,7 +32,7 @@ public class PaymentTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Payment payment = db.get(rowIndex);
+		Payment payment = payments.get(rowIndex);
 		switch(columnIndex) {
 		case 0:
 			return payment.getMonthlyPaymentForPrincipal();
@@ -45,8 +45,7 @@ public class PaymentTableModel extends AbstractTableModel {
 		case 4:
 			return payment.getPaymentMadeForEachMonth();
 		case 5:
-			return payment.getLoanId();
-
+			return payment.getPaymentId();
 		}
 		
 		return null;

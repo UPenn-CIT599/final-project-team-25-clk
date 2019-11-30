@@ -1,7 +1,10 @@
 package model;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Customer implements Serializable {
@@ -12,26 +15,116 @@ public class Customer implements Serializable {
 	private double annualIncome;
 	private String occupation;
 	private String creditGrading;
-	//private LoanApplication loanApplication;
-	//private ArrayList<Loan> loans;
+	private ArrayList<LoanApplication> loanApplications;
+	private ArrayList<Loan> loans;
 	private int currentPaymentMonth;
 	private int payOrDefault;
 	private HashMap<Integer, String> monthlyDefaultStatus;
 
-	
+	/**
+	 * constructor for customer.
+	 * @param userId
+	 * @param name
+	 * @param occupation
+	 * @param annualIncome
+	 */
 	public Customer(int userId, String name, String occupation, double annualIncome) {
 		this.name = name;
 		this.occupation = occupation;
 		this.annualIncome = annualIncome;
+		this.loanApplications = new ArrayList<LoanApplication>();
+		this.loans = new ArrayList<Loan>();
 		this.userId = userId + 1;
 	
 	}
+	
+	// STORAGE FOR LOAN APPLICATION.
+	
+	/**
+	 * adding the loan application into current customer.
+	 * @param loanAmount
+	 * @param loanDuration
+	 * @param reason
+	 */
+	public void addLoanApplication(String loanAmount, String loanDuration, String reason) {
 
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+		Date today = new Date();
+		int loanApplicationId = loanApplications.size();
+		
+		LoanApplication loanApplication = new LoanApplication(loanApplicationId, Double.parseDouble(loanAmount), 
+				Integer.parseInt(loanDuration), reason, today);
+		
+		loanApplications.add(loanApplication);
 	}
-
+	
+	/**
+	 * get the loan application by id.
+	 * @param loanApplicationID
+	 * @return
+	 */
+	public LoanApplication getLoanApplication(int loanApplicationID) {
+		Iterator i = loanApplications.iterator();
+		while (i.hasNext()) {
+			LoanApplication loanApplication = (LoanApplication) i.next();
+			if (loanApplicationID == loanApplication.getLoanApplicationId()) {
+				return loanApplication;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * get loan applications list.
+	 * @return
+	 */
+	public ArrayList<LoanApplication> getLoanApplications() {
+		return loanApplications;
+	}
+	
+	// STORAGE FOR LOAN.
+	
+	/**
+	 * add a new loan to customer.
+	 * @param loanInfo
+	 */
+	public void addLoan(HashMap<String, String> loanInfo) {
+		int loanId = loans.size();
+		double principal = Double.parseDouble(loanInfo.get("principal"));
+		double rate = Double.parseDouble(loanInfo.get("rate"));
+		int loanPeriod = Integer.parseInt(loanInfo.get("loanPeriod"));
+		double monthlyPayment = Double.parseDouble(loanInfo.get("monthlyPayment"));
+		
+		
+		Loan loan = new Loan(loanId, principal, rate, loanPeriod, monthlyPayment);
+		loans.add(loan);
+	}
+	
+	/**
+	 * get loan by id.
+	 * @param loanId
+	 * @return
+	 */
+	public Loan getLoan(int loanId) {
+		Iterator i = loans.iterator();
+		while (i.hasNext()) {
+			Loan loan = (Loan) i.next();
+			if (loanId == loan.getLoanId()) {
+				return loan;
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * get a list of loans.
+	 * @return
+	 */
+	public ArrayList<Loan> getLoans() {
+		return loans;
+	}
+	
+	/// Miscellaneous
+	
 
 	public double getAnnualIncome() {
 		return annualIncome;
@@ -72,102 +165,7 @@ public class Customer implements Serializable {
 		return userId;
 	}
 	
-	
-//
-//	/**
-//	 * get user id
-//	 * 
-//	 * @return
-//	 */
-//	public int getUser_id() {
-//		return user_id;
-//	}
-//
-//	/**
-//	 * get name of customer
-//	 * 
-//	 * @return
-//	 */
-//	public String getName() {
-//		return name;
-//	}
-//
-//	/**
-//	 * get annual income of customer
-//	 * 
-//	 * @return
-//	 */
-//	public double getAnnualIncome() {
-//		return annualIncome;
-//	}
-//
-//	/**
-//	 * get job title of customer.
-//	 * 
-//	 * @return
-//	 */
-//	public String getOccupation() {
-//		return occupation;
-//	}
-//
-//	/**
-//	 * get credit grading of customer
-//	 * 
-//	 * @return
-//	 */
-//	public String getCreditGrading() {
-//		return creditGrading;
-//	}
-//
-//	/**
-//	 * get loan application associated with this customer.
-//	 * 
-//	 * @return
-//	 */
-//	public LoanApplication getLoanApplication() {
-//		return loanApplication;
-//	}
-//
-//	/**
-//	 * get a list of loan associated with this customer.
-//	 * 
-//	 * @return
-//	 */
-//	public ArrayList<Loan> getLoans() {
-//		return loans;
-//	}
-//
-//	/**
-//	 * apply for new loan
-//	 */
-//	public void applyLoan(String loanAmount, String loanDuration, String reasonForApplying,
-//			String creditCardSpendingThisMonth, String lastDefaultDate, String allocatedCreditLimit,
-//			String firstCreditCardDate, String inquireBorrowingEligibilityTimes) {
-//
-//		Storage storage = new Storage();
-//
-//		HashMap<String, String> loanApplicationDetail = new HashMap();
-//		// for now will assume customer is applying for a 100,000 loan for a total of
-//		// 36 months and other loan application details because UI is not implemented
-//		// yet.
-//
-//		loanApplicationDetail.put("loanAmount", loanAmount);
-//		loanApplicationDetail.put("loanDuration", loanDuration);
-//		loanApplicationDetail.put("reasonForApplying", reasonForApplying);
-//		loanApplicationDetail.put("creditCardSpendingThisMonth", creditCardSpendingThisMonth);
-//		loanApplicationDetail.put("lastDefaultDate", lastDefaultDate);
-//		loanApplicationDetail.put("allocatedCreditLimit", allocatedCreditLimit);
-//		loanApplicationDetail.put("firstCreditCardDate", firstCreditCardDate);
-//		loanApplicationDetail.put("inquireBorrowingEligibilityTimes", inquireBorrowingEligibilityTimes);
-//
-//		if (loanAmount.isEmpty() || loanDuration.isEmpty()) {
-//			this.loanApplication = null;
-//			return;
-//		}
-//		this.loanApplication = new LoanApplication(loanApplicationDetail, this.user_id);
-//		storage.storeLoanApplication(loanApplication);
-//	}
-//
+
 //	/**
 //	 * make monthly instalment for loan.
 //	 */

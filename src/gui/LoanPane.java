@@ -5,6 +5,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -14,8 +16,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import eventobject.ExistingUserListener;
-import eventobject.LoanPaymentListener;
 import eventobject.LoanSelectionListener;
 import model.Customer;
 import model.Database;
@@ -24,23 +24,24 @@ import model.Loan;
 public class LoanPane extends JPanel implements ActionListener {
 	private JComboBox<Item> loanSelection;
 	private LoanSelectionListener selectionListener;
-	private LoanPaymentListener paymentListener;
 	private JTextField amount;
 	private JButton payBtn;
+	private Customer currentCustomer;
+	private Database database;
 	
 	
-	public LoanPane(Database database) {
-		// add filter current customer . for now just display all loans.
-		
+	public LoanPane(Database database) {		
 		setLayout(new BorderLayout());
-		List<Loan> loans = database.getLoans();
+		this.database = database;
+		
+		currentCustomer = database.getCurrentCustomer();
+		ArrayList<Loan> loans = currentCustomer.getLoans();
 		loanSelection = new JComboBox<Item>();
 		
 		DefaultComboBoxModel<Item> loanSelectionModel = new DefaultComboBoxModel<Item>();
 		
 		for (Loan loan : loans) {
-			Customer customer = database.getCustomer(loan.getCustomerId());
-			loanSelectionModel.addElement(new Item(loan.getPrincipal() + " loan to " + customer.getName(), loan.getLoanId()));
+			loanSelectionModel.addElement(new Item(loan.getPrincipal() + " loan to " + currentCustomer.getName(), loan.getLoanId()));
 		}
 		loanSelection.setModel(loanSelectionModel);
 		loanSelection.addActionListener(this);
@@ -49,21 +50,37 @@ public class LoanPane extends JPanel implements ActionListener {
 		add(loanSelection, BorderLayout.NORTH);
 	}
 
-
-
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("loanSelection")) {
 			JComboBox cb = (JComboBox)e.getSource();
-			Item loan = (Item) cb.getSelectedItem();
-			int loanId = loan.getValue();
+			Item _loan = (Item) cb.getSelectedItem();
+			int loanId = _loan.getValue();
+			
+			Loan currentLoan = currentCustomer.getLoan(loanId);
+			database.setCurrentLoan(currentLoan);
+			repaintWithCurrentLoan(currentLoan);
+			
+			
+			// mock payment.
+			for (int i = 0; i < 40; i++) {
+				HashMap<String, String> paymentInfo = new HashMap();
+				paymentInfo.put("monthlyPaymentForPrincipal", "1000");
+				paymentInfo.put("monthlyPaymentForInterest", "100");
+				paymentInfo.put("monthlyPaymentTotal", "1100");
+				paymentInfo.put("payOrDefault", "true");
+				paymentInfo.put("paymentMadeForEachMonth", "1100");
+				currentLoan.addPayment(paymentInfo);
+			}
+			
+			database.updateCustomer(currentCustomer);
+			
 			if (selectionListener != null) {
-				selectionListener.loanSelectionOccured(loanId);;
+				selectionListener.loanSelectionOccured();
 			}
 		} else if (e.getActionCommand().equals("loanPayment")) {
 			double amount = Double.parseDouble(this.amount.getText());
-			if (paymentListener != null) {
-				paymentListener.loanPaymentOccured(amount);
-			}
+			database.getCurrentLoan().updatePaymentForTheMonth(amount);
+			database.updateCustomer(currentCustomer);
 		}
 		
 		
@@ -170,9 +187,5 @@ public class LoanPane extends JPanel implements ActionListener {
 	
 	public void setFormListener(LoanSelectionListener selectionListener) {
 		this.selectionListener = selectionListener;
-	}
-	
-	public void setPaymentListener(LoanPaymentListener paymentListener) {
-		this.paymentListener = paymentListener;
 	}
 }

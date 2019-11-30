@@ -10,10 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import eventobject.LoanApplicationForm;
-import eventobject.LoanApplicationListener;
-import eventobject.NewUserForm;
-import eventobject.NewUserFormListener;
+import model.Customer;
 import model.Database;
 
 public class LoanApplicationPane extends JPanel {
@@ -25,9 +22,8 @@ public class LoanApplicationPane extends JPanel {
 	private JTextField loanDurationField;
 	private JTextField reasonField;
 	private JButton submit;
-	private LoanApplicationListener formListener;
 
-	public LoanApplicationPane() {
+	public LoanApplicationPane(Database database) {
 		loanAmountLabel = new JLabel("Loan Application Amount: ");
 		loanDurationLabel = new JLabel("Loan Duration: ");
 		reasonLabel = new JLabel("Reason for applying: ");
@@ -39,18 +35,16 @@ public class LoanApplicationPane extends JPanel {
 		submit = new JButton("Apply");
 
 		submit.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String loanAmount = loanAmountField.getText();
 				String loanDuration = loanDurationField.getText();
 				String reason = reasonField.getText();
+				
+				Customer currentCustomer = database.getCurrentCustomer();
+				currentCustomer.addLoanApplication(loanAmount, loanDuration, reason);
 
-				LoanApplicationForm ev = new LoanApplicationForm(this, loanAmount, loanDuration, reason);
-
-				if (formListener != null) {
-					formListener.formEventOccurred(ev);
-				}
+				database.updateCustomer(currentCustomer);
 			}
 
 		});
@@ -114,7 +108,4 @@ public class LoanApplicationPane extends JPanel {
 		
 	}
 
-	public void setFormListener(LoanApplicationListener formListener) {
-		this.formListener = formListener;
-	}
 }

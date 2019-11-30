@@ -9,7 +9,6 @@ public class LoanApplication implements Serializable {
 
 	private static final long serialVersionUID = 6248986646073694934L;
 	private int loanApplicationId;
-	private int customerId;
 	private double loanAmount;
 	private int loanDuration;
 	private String reasonForApplying;
@@ -21,15 +20,15 @@ public class LoanApplication implements Serializable {
 	private int inquireBorrowingEligibilityTimes;
 	
 	/**
-	 * constructor.
+	 * constructor for loan aplication.
 	 */
-	public LoanApplication(int loanApplicationId, double loanAmount, int loanDuration, String reasonForApplying, Date today, int customerId) {
+	public LoanApplication(int loanApplicationId, double loanAmount, int loanDuration, 
+			String reasonForApplying, Date today) {
 		this.loanApplicationId = loanApplicationId + 1;
 		this.loanAmount = loanAmount;
 		this.loanDuration = loanDuration;
 		this.reasonForApplying = reasonForApplying;
 		this.applicationDate = today;
-		this.customerId = customerId;
 	}
 
 	
@@ -43,14 +42,6 @@ public class LoanApplication implements Serializable {
 		return loanApplicationId;
 	}
 
-	/**
-	 * get customer id associated with this loan aplication.
-	 * 
-	 * @return
-	 */
-	public int getCustomerId() {
-		return customerId;
-	}
 
 	/**
 	 * get loan amount
