@@ -1,17 +1,20 @@
 package gui;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import eventobject.LoanSelectionListener;
+import eventobject.LoanAnalysisListener;
 import eventobject.NewUserListener;
 import model.Customer;
 import model.Database;
@@ -31,13 +34,13 @@ public class NewUserPane extends JPanel {
 	public NewUserPane(Database database) {
 		this.database = database;
 		
+		Container newUserPanel = this;
+		
 		nameLabel = new JLabel("Name: ");
 		occupationLabel = new JLabel("Occupation: ");
-		annualIncomeLabel = new JLabel("Annual Income: ");
 
 		nameField = new JTextField(20);
 		occupationField = new JTextField(20);
-		annualIncomeField = new JTextField(20);
 
 		submit = new JButton("submit");
 
@@ -46,11 +49,11 @@ public class NewUserPane extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				String name = nameField.getText();
 				String occupation = occupationField.getText();
-				String annualIncome = annualIncomeField.getText();
 				
-				Customer currentCustomer = database.addCustomer(name, occupation, annualIncome);
+				Customer currentCustomer = database.addCustomer(name, occupation);
 				database.setCurrentCustomer(currentCustomer);
-				//JOptionPane.showMessageDialog(this.g"Customer created successfully");
+				
+				JOptionPane.showMessageDialog(newUserPanel,  "Customer created successfully");
 				
 				if (newUserListener != null) {
 					newUserListener.newUserCreatedOccured();
@@ -91,17 +94,6 @@ public class NewUserPane extends JPanel {
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(occupationField, gc);
 		
-		///////////// next row /////////////////
-		gc.gridy++;
-
-		
-		gc.gridx = 0;
-		gc.anchor = GridBagConstraints.LINE_END;
-		add(annualIncomeLabel, gc);
-		
-		gc.gridx = 1;
-		gc.anchor = GridBagConstraints.LINE_START;
-		add(annualIncomeField, gc);
 		
 		/////////// next row //////////////////
 		

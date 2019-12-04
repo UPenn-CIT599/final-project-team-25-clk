@@ -52,15 +52,6 @@ public class ExistingUserPane extends JPanel implements ActionListener {
 		Customer currentCustomer  = database.getCustomer(userId);
 		database.setCurrentCustomer(currentCustomer);
 
-		// mock approved loan. For now , it is created when we select a random user. It creates a 150k loan for them.
-		HashMap<String, String> loanInfo = new HashMap();
-		loanInfo.put("principal", "150000");
-		loanInfo.put("rate", "12");
-		loanInfo.put("loanPeriod", "24");
-		loanInfo.put("monthlyPayment", "2500");
-		
-		currentCustomer.addLoan(loanInfo);
-		database.updateCustomer(currentCustomer);
 		this.repaintWithCurrentCustomer(currentCustomer);
 		
 		if (existingUserListener != null) {
@@ -104,18 +95,6 @@ public class ExistingUserPane extends JPanel implements ActionListener {
 		userInfo.add(new JTextField(currentCustomer.getOccupation(), 20), gc);
 		
 		///////////// next row /////////////////
-		gc.gridy++;
-
-		
-		gc.gridx = 0;
-		gc.anchor = GridBagConstraints.LINE_END;
-		userInfo.add(new JLabel("Annual Income:      "), gc);
-		
-		gc.gridx = 1;
-		gc.anchor = GridBagConstraints.LINE_START;
-		userInfo.add(new JTextField(Double.toString(currentCustomer.getAnnualIncome()), 20), gc);
-		
-		///////////// next row /////////////////
 		
 		gc.gridy++;
 		gc.gridx = 0;
@@ -131,8 +110,6 @@ public class ExistingUserPane extends JPanel implements ActionListener {
 		userInfo.add(new JLabel(""), gc);
 		
 		add(userInfo, BorderLayout.CENTER);
-		
-		
 	}
 	
 	public void setFormListener(ExistingUserListener existingUserListener) {

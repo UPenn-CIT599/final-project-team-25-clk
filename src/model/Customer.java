@@ -12,7 +12,6 @@ public class Customer implements Serializable {
 	private static final long serialVersionUID = -3634930368104200041L;
 	private int userId;
 	private String name;
-	private double annualIncome;
 	private String occupation;
 	private String creditGrading;
 	private ArrayList<LoanApplication> loanApplications;
@@ -28,10 +27,9 @@ public class Customer implements Serializable {
 	 * @param occupation
 	 * @param annualIncome
 	 */
-	public Customer(int userId, String name, String occupation, double annualIncome) {
+	public Customer(int userId, String name, String occupation) {
 		this.name = name;
 		this.occupation = occupation;
-		this.annualIncome = annualIncome;
 		this.loanApplications = new ArrayList<LoanApplication>();
 		this.loans = new ArrayList<Loan>();
 		this.userId = userId + 1;
@@ -46,17 +44,39 @@ public class Customer implements Serializable {
 	 * @param loanDuration
 	 * @param reason
 	 */
-	public void addLoanApplication(String loanAmount, String loanDuration, String reason) {
+	public LoanApplication addLoanApplication(double loanAmount, int loanDuration, int pubRec ,double revol_bal ,
+			double total_rev_hi_lim , int mo_sin_old_rev_tl_op , int inq_last_6mths ,int num_actv_bc_tl,int num_actv_rev_tl, int open_act_il) {
 
 		Date today = new Date();
 		int loanApplicationId = loanApplications.size();
 		
-		LoanApplication loanApplication = new LoanApplication(loanApplicationId, Double.parseDouble(loanAmount), 
-				Integer.parseInt(loanDuration), reason, today);
+		LoanApplication loanApplication = new LoanApplication(loanApplicationId, loanAmount, 
+				loanDuration, pubRec, revol_bal, total_rev_hi_lim, mo_sin_old_rev_tl_op, 
+				inq_last_6mths, num_actv_bc_tl, num_actv_rev_tl, open_act_il,  today);
 		
 		loanApplications.add(loanApplication);
+		
+		return loanApplication;
 	}
 	
+	/**
+	 * get a specific loan application, by index.
+	 * @param index
+	 * @return
+	 */
+	public LoanApplication getLoanApplicationById(int index) {
+		return loanApplications.get(index);
+	}
+	
+	/**
+	 * get the last loan application.
+	 * @return
+	 */
+	public LoanApplication getLastLoanApplication() {
+		return loanApplications.get(loanApplications.size() - 1);
+	}
+	
+
 	/**
 	 * get the loan application by id.
 	 * @param loanApplicationID
@@ -81,22 +101,18 @@ public class Customer implements Serializable {
 		return loanApplications;
 	}
 	
-	// STORAGE FOR LOAN.
 	
 	/**
 	 * add a new loan to customer.
 	 * @param loanInfo
 	 */
-	public void addLoan(HashMap<String, String> loanInfo) {
+	public Loan addLoan(double amount, double interestRates, int loanPeriod, String creditGrade ) {
 		int loanId = loans.size();
-		double principal = Double.parseDouble(loanInfo.get("principal"));
-		double rate = Double.parseDouble(loanInfo.get("rate"));
-		int loanPeriod = Integer.parseInt(loanInfo.get("loanPeriod"));
-		double monthlyPayment = Double.parseDouble(loanInfo.get("monthlyPayment"));
 		
-		
-		Loan loan = new Loan(loanId, principal, rate, loanPeriod, monthlyPayment);
+		Loan loan = new Loan(loanId, amount, interestRates, loanPeriod, creditGrade);
 		loans.add(loan);
+		
+		return loan;
 	}
 	
 	/**
@@ -125,11 +141,6 @@ public class Customer implements Serializable {
 	
 	/// Miscellaneous
 	
-
-	public double getAnnualIncome() {
-		return annualIncome;
-	}
-
 
 	public String getOccupation() {
 		return occupation;
@@ -164,50 +175,4 @@ public class Customer implements Serializable {
 	public int getUserId() {
 		return userId;
 	}
-	
-
-//	/**
-//	 * make monthly instalment for loan.
-//	 */
-//	public void makePayment() {
-//
-//	}
-//
-//	// user chooses a month to pay. Note that if the user jumps to month 12, then
-//	// assume that all the past payments for months 1-11 were paid back in full.
-//	public int chooseMonth() {
-//
-//		return currentPaymentMonth;
-//	}
-//
-//	// for this currentPaymentMonth, user must choose whether to pay back in
-//	// full(input integer 1) or go default(input integer 0)
-//	public int choosePayOrDefault(int currentPaymentMonth) {
-//
-//		return payOrDefault;
-//	}
-//
-//	/**
-//	 * manage existing loan.
-//	 */
-//	public void manageLoan() {
-//
-//	}
-//	
-//	/**
-//	 * customer decides to pay instalment or not.
-//	 * @return
-//	 */
-//	public boolean decidePayOrNot() {
-//		return true;
-//	}
-//	
-//	/**
-//	 * customer decide how much to pay
-//	 * @return
-//	 */
-//	public double howMuchToPay() {
-//		return 1;
-//	}
-
 }

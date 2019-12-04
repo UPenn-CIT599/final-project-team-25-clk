@@ -1,8 +1,8 @@
+package model;
 import java.util.ArrayList;
 
 public class Algorithm {
 
-	ArrayList <UserInterface> userInput;
 	int pubRec; //instance variable for paymentHistory
 	public static final double PAYMENTHISTORYWEIGHTING = 0.35;
 	public static final double HIGHESTSCORE = 67.75;
@@ -172,8 +172,6 @@ public class Algorithm {
 			int mo_sin_old_rev_tl_op, int inq_last_6mths, int num_actv_bc_tl, int num_actv_rev_tl, int open_act_il) {
 		//each parameter within the method should be re-written later on as userInput[i] 
 		//where i is the index representing the original parameters of the methods as described in java doc above.
-		
-		
 		
 		double PennCLKScore = Algorithm.paymentHistoryScore(pubRec) * 0.35 + 
 				Algorithm.amountsOwedScore(revol_bal, total_rev_hi_lim) * 0.30

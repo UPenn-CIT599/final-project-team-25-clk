@@ -14,6 +14,12 @@ public class Loan implements Serializable {
 	private double rate;
 	private int loanPeriod;
 	private double monthlyPayment;
+	private String creditGrade;
+	public String getCreditGrade() {
+		return creditGrade;
+	}
+
+
 	private ArrayList<Payment> payments;
 	
 	/**
@@ -25,12 +31,12 @@ public class Loan implements Serializable {
 	 * @param monthlyPayment
 	 */
 	public Loan(int loanId, double principal, double rate, 
-			int loanPeriod, double monthlyPayment) {
+			int loanPeriod, String creditGrade) {
 		this.loanId = loanId;
 		this.principal = principal;
 		this.rate = rate;
 		this.loanPeriod = loanPeriod;
-		this.monthlyPayment = monthlyPayment;
+		this.creditGrade = creditGrade;
 		this.payments = new ArrayList<Payment>();
 	}
 	

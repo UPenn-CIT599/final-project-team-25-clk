@@ -15,8 +15,8 @@ public class ApplicationResult {
 	 * @param customerInformation: the user's information
 	 * @return
 	 */
-	public double userPennCLKScore (ArrayList<Customer> customerInformation) {
-		double userPennCLKScore = algo.calculatePennCLKscore(customerInformation[1]..);
+	public double userPennCLKScore (LoanApplication loanApplication) {
+		double userPennCLKScore = algo.calculatePennCLKscore(loanApplication);
 		return userPennCLKScore;
 	}
 	

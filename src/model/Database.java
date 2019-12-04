@@ -23,8 +23,17 @@ public class Database {
 	private List<Customer> customers;
 	private Customer currentCustomer;
 	private Loan currentLoan;
+	private LoanApplication currentLoanApplication;
 	
 	
+	public LoanApplication getCurrentLoanApplication() {
+		return currentLoanApplication;
+	}
+
+	public void setCurrentLoanApplication(LoanApplication currentLoanApplication) {
+		this.currentLoanApplication = currentLoanApplication;
+	}
+
 	// star
 	public Customer getCurrentCustomer() {
 		return currentCustomer;
@@ -70,10 +79,9 @@ public class Database {
 	 * @param annualIncome
 	 * @return
 	 */
-	public Customer addCustomer(String name, String occupation, String annualIncome) {
-		double _annualIncome = Double.parseDouble(annualIncome);
+	public Customer addCustomer(String name, String occupation) {
 		int max = customers.size();
-		Customer customer = new Customer(max, name, occupation, _annualIncome);
+		Customer customer = new Customer(max, name, occupation);
 		customers.add(customer);
 		
 		try {

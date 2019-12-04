@@ -11,25 +11,93 @@ public class LoanApplication implements Serializable {
 	private int loanApplicationId;
 	private double loanAmount;
 	private int loanDuration;
-	private String reasonForApplying;
 	private Date applicationDate;
-	private double creditCardSpendingThisMonth;
-	private Date lastDefaultDate;
-	private double allocatedCreditLimit;
-	private Date firstCreditCardDate;
-	private int inquireBorrowingEligibilityTimes;
+	
+	private int pubRec;
+	private double revol_bal;
+	private double total_rev_hi_lim;
+	private int mo_sin_old_rev_tl_op;
+	private int inq_last_6mths;
+	private int num_actv_bc_tl;
+	private int num_actv_rev_tl;
+	private int open_act_il;
 	
 	/**
 	 * constructor for loan aplication.
 	 */
-	public LoanApplication(int loanApplicationId, double loanAmount, int loanDuration, 
-			String reasonForApplying, Date today) {
-		this.loanApplicationId = loanApplicationId + 1;
+	public LoanApplication(int loanApplicationId, double loanAmount, int loanDuration, int pubRec, double revol_bal ,
+			double total_rev_hi_lim , int mo_sin_old_rev_tl_op ,int inq_last_6mths ,int num_actv_bc_tl, int num_actv_rev_tl,int open_act_il 
+			  , Date today) {
+		this.loanApplicationId = loanApplicationId;
 		this.loanAmount = loanAmount;
 		this.loanDuration = loanDuration;
-		this.reasonForApplying = reasonForApplying;
+		this.pubRec = pubRec;
+		this.revol_bal = revol_bal;
+		this.total_rev_hi_lim = total_rev_hi_lim;
+		this.mo_sin_old_rev_tl_op = mo_sin_old_rev_tl_op;
+		this.inq_last_6mths = inq_last_6mths;
+		this.num_actv_bc_tl = num_actv_bc_tl;
+		this.num_actv_rev_tl = num_actv_rev_tl;
+		this.open_act_il = open_act_il;
 		this.applicationDate = today;
 	}
+
+	
+	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+
+
+	public int getPubRec() {
+		return pubRec;
+	}
+
+
+
+	public double getRevol_bal() {
+		return revol_bal;
+	}
+
+
+
+	public double getTotal_rev_hi_lim() {
+		return total_rev_hi_lim;
+	}
+
+
+
+	public int getMo_sin_old_rev_tl_op() {
+		return mo_sin_old_rev_tl_op;
+	}
+
+
+
+	public int getInq_last_6mths() {
+		return inq_last_6mths;
+	}
+
+
+
+	public int getNum_actv_bc_tl() {
+		return num_actv_bc_tl;
+	}
+
+
+
+	public int getNum_actv_rev_tl() {
+		return num_actv_rev_tl;
+	}
+
+
+
+	public int getOpen_act_il() {
+		return open_act_il;
+	}
+
+
+
 
 	
 
@@ -61,14 +129,6 @@ public class LoanApplication implements Serializable {
 		return loanDuration;
 	}
 
-	/**
-	 * get reason for applying.
-	 * 
-	 * @return
-	 */
-	public String getReasonForApplying() {
-		return reasonForApplying;
-	}
 
 	/**
 	 * get application date.
@@ -79,49 +139,6 @@ public class LoanApplication implements Serializable {
 		return applicationDate;
 	}
 
-	/**
-	 * get credit card spending of this month. Used in credit scoring.
-	 * 
-	 * @return
-	 */
-	public double getCreditCardSpendingThisMonth() {
-		return creditCardSpendingThisMonth;
-	}
-
-	/**
-	 * get last default date of customer.
-	 * 
-	 * @return
-	 */
-	public Date getLastDefaultDate() {
-		return lastDefaultDate;
-	}
-
-	/**
-	 * get allocated credit limit of the credit card.
-	 * 
-	 * @return
-	 */
-	public double getAllocatedCreditLimit() {
-		return allocatedCreditLimit;
-	}
-
-	/**
-	 * get first date of getting credit card.
-	 * 
-	 * @return
-	 */
-	public Date getFirstCreditCardDate() {
-		return firstCreditCardDate;
-	}
-
-	/**
-	 * get how many times has customer enquire about eligibility to obtain a loan.
-	 * 
-	 * @return
-	 */
-	public int getInquireBorrowingEligibilityTimes() {
-		return inquireBorrowingEligibilityTimes;
-	}
+	
 
 }

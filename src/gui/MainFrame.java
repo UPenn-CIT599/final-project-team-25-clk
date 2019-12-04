@@ -12,7 +12,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 
 import eventobject.ExistingUserListener;
-import eventobject.LoanSelectionListener;
+import eventobject.LoanApplicationListener;
+import eventobject.LoanAnalysisListener;
 import eventobject.NewUserListener;
 import model.Customer;
 import model.Database;
@@ -60,47 +61,36 @@ public class MainFrame extends JFrame {
 		
 		newUserPane.setFormListener(new NewUserListener() {
 			public void newUserCreatedOccured() {
-				showLoanTab();
+				tabbedPane.remove(existingUserPane);
+				existingUserPane = new ExistingUserPane(database);
+				tabbedPane.add("Select User", existingUserPane);
 			}
 		});
 		
 		existingUserPane.setFormListener(new ExistingUserListener() {
 			public void existingUserSelected() {
-				showLoanTab();
+				tabbedPane.remove(loanApplicationPane);
+				tabbedPane.remove(loanPane);
+				
+				loanApplicationPane = new LoanApplicationPane(database);
+				loanPane = new LoanPane(database);
+				
+				tabbedPane.add("Loan Application", loanApplicationPane);
+				tabbedPane.add("Select Loan", loanPane);
+				
+				loanApplicationPane.setFormListener(new LoanApplicationListener() {
+					public void loanApplicationOccured() {
+						tabbedPane.remove(loanPane);
+						loanPane = new LoanPane(database);
+						tabbedPane.add("Select Loan", loanPane);
+					}
+				});
 			}
 		});
 
 		add(tabbedPane);
-		
-		setSize(600,600);
+		setSize(700,600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 	}
-	
-	/**
-	 * show additional loan panels.
-	 */
-	public void showLoanTab() {
-		// creating a new loan application tab.
-		tabbedPane.remove(loanApplicationPane);
-		loanApplicationPane = new LoanApplicationPane(database);
-		tabbedPane.add("Loan Application", loanApplicationPane);
-		
-		// creating a new loan tab
-		tabbedPane.remove(loanPane);
-		loanPane = new LoanPane(database);
-		tabbedPane.add("Select Loan", loanPane);
-		
-		loanPane.setFormListener(new LoanSelectionListener() {
-			public void loanSelectionOccured() {				
-				tabbedPane.remove(manageLoanPane);
-				manageLoanPane = new ManageLoanPane();
-				
-				manageLoanPane.setData(database.getCurrentLoan().getPayments());
-				tabbedPane.add("Manage Loan", manageLoanPane);
-			}
-			
-		});
-	}
-	
 }
