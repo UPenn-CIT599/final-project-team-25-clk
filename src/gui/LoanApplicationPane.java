@@ -298,7 +298,29 @@ public class LoanApplicationPane extends JPanel {
 		gc.gridx = 1;
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(numOfActiveBorrowingAccountField, gc);
-
+		
+		///////////// next row /////////////////
+		gc.gridy++;
+	
+		gc.gridx = 0;
+		gc.anchor = GridBagConstraints.LINE_START;
+		add(jobStatusLabel, gc);
+		
+		gc.gridx = 1;
+		gc.anchor = GridBagConstraints.LINE_START;
+		add(jobStatusField, gc);
+	
+		///////////// next row /////////////////
+		gc.gridy++;
+		
+		gc.gridx = 0;
+		gc.anchor = GridBagConstraints.LINE_START;
+		add(incomeLabel, gc);
+		
+		gc.gridx = 1;
+		gc.anchor = GridBagConstraints.LINE_START;
+		add(incomeField, gc);
+		
 		/////////// next row //////////////////
 		
 		gc.weightx = 1;
