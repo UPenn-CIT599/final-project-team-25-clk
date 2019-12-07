@@ -1,6 +1,9 @@
 package model;
 import java.util.ArrayList;
 
+import gui.LoanApplicationPane;
+import model.LoanApplication;
+
 public class Algorithm {
 
 	int pubRec; //instance variable for paymentHistory
@@ -168,15 +171,46 @@ public class Algorithm {
 	 * @param all of the required information from the user and from the database.
 	 * @return
 	 */
-	public static double calculatePennCLKscore (int pubRec, double revol_bal, double total_rev_hi_lim, 
-			int mo_sin_old_rev_tl_op, int inq_last_6mths, int num_actv_bc_tl, int num_actv_rev_tl, int open_act_il) {
+	public static double debtToIncomeScore (LoanApplication loanApplication) {
+		double income = loanApplication.getIncome();
+		double loanAmount = loanApplication.getLoanAmount();
+		double dti = loanAmount / income;
+		int dtiScore = 0;
+		if (dti <= 1) {
+			dtiScore = 50;
+		} else if (dti > 1 && dti <= 2) {
+			dtiScore = 30;
+		} else if (dti > 2 && dti <= 3) {
+			dtiScore = 0;
+		} else if (dti > 3) {
+			dtiScore = -10000;
+		}
+		
+		return dtiScore;
+	}
+	
+	public static double jobScore (LoanApplication loanApplication) {
+		int jobScore = 0;
+		if (loanApplication.getJobStatus.equals("Full Time")) {
+			jobScore = 30;
+		} else {
+			jobScore = 0;
+		}
+		
+		return jobScore;
+	}
+	
+	public static double calculatePennCLKscore (LoanApplication loanApplication) {
 		//each parameter within the method should be re-written later on as userInput[i] 
 		//where i is the index representing the original parameters of the methods as described in java doc above.
 		
-		double PennCLKScore = Algorithm.paymentHistoryScore(pubRec) * 0.35 + 
-				Algorithm.amountsOwedScore(revol_bal, total_rev_hi_lim) * 0.30
-		+ Algorithm.creditHistoryScore(mo_sin_old_rev_tl_op) * 0.15 + Algorithm.pursuitofNewCreditScore(inq_last_6mths) * 0.10
-		+ Algorithm.creditMixScore(num_actv_bc_tl, num_actv_rev_tl, open_act_il) * 0.10;
+		double PennCLKScore = Algorithm.paymentHistoryScore(loanApplication.getPubRec()) * 0.30 + 
+				Algorithm.amountsOwedScore(loanApplication.getRevol_bal(), loanApplication.getTotal_rev_hi_lim()) * 0.30
+		+ Algorithm.creditHistoryScore(loanApplication.getMo_sin_old_rev_tl_op()) * 0.10 
+		+ Algorithm.pursuitofNewCreditScore(loanApplication.getInq_last_6mths()) * 0.10
+		+ Algorithm.creditMixScore(loanApplication.getNum_actv_bc_tl(), loanApplication.getNum_actv_rev_tl(), loanApplication.getOpen_act_il()) * 0.10 
+		+ Algorithm.debtToIncomeScore(loanApplication) * 0.05 + Algorithm.jobScore(loanApplication) * 0.05;
+		
 		
 		double finalPennCLKScore = (PennCLKScore / HIGHESTSCORE) * HIGHESTCONVERSIONBASE;
 		if (finalPennCLKScore < LOWESTCONVERSIONBASE) {

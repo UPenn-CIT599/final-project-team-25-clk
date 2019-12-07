@@ -13,12 +13,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import com.sun.javafx.scene.traversal.Algorithm;
+
 import eventobject.LoanApplicationListener;
 import eventobject.IntegerVerifier;
 import model.Customer;
 import model.Database;
 import model.Loan;
 import model.LoanApplication;
+import model.Algorithm;
 
 public class LoanApplicationPane extends JPanel {
 	private JLabel loanAmountLabel;
@@ -106,6 +109,10 @@ public class LoanApplicationPane extends JPanel {
 				Customer currentCustomer = database.getCurrentCustomer();
 				LoanApplication currentLoanApplication = currentCustomer.addLoanApplication(loanAmount, loanDuration, pubRec, revol_bal ,
 						total_rev_hi_lim ,mo_sin_old_rev_tl_op ,inq_last_6mths , num_actv_bc_tl, num_actv_rev_tl, open_act_il);
+				Algorithm algo = new Algorithm();
+				Algorithm.debtToIncomeScore;
+				
+				
 				database.setCurrentLoanApplication(currentLoanApplication);
 				database.updateCustomer(currentCustomer);
 				
