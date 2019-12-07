@@ -49,14 +49,15 @@ public class Customer implements Serializable {
 	 * @param reason
 	 */
 	public LoanApplication addLoanApplication(double loanAmount, int loanDuration, int pubRec ,double revol_bal ,
-			double total_rev_hi_lim , int mo_sin_old_rev_tl_op , int inq_last_6mths ,int num_actv_bc_tl,int num_actv_rev_tl, int open_act_il) {
+			double total_rev_hi_lim , int mo_sin_old_rev_tl_op , int inq_last_6mths ,int num_actv_bc_tl,int num_actv_rev_tl, int open_act_il,
+			String jobStatus,double income) {
 
 		Date today = new Date();
 		int loanApplicationId = loanApplications.size();
 		
 		LoanApplication loanApplication = new LoanApplication(loanApplicationId, loanAmount, 
 				loanDuration, pubRec, revol_bal, total_rev_hi_lim, mo_sin_old_rev_tl_op, 
-				inq_last_6mths, num_actv_bc_tl, num_actv_rev_tl, open_act_il,  today);
+				inq_last_6mths, num_actv_bc_tl, num_actv_rev_tl, open_act_il,  today, jobStatus, income);
 		
 		loanApplications.add(loanApplication);
 		

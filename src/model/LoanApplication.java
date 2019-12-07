@@ -13,7 +13,17 @@ public class LoanApplication implements Serializable {
 	private int loanDuration;
 	private Date applicationDate;
 	private boolean approved;
-	
+	private int pubRec;
+	private double revol_bal;
+	private double total_rev_hi_lim;
+	private int mo_sin_old_rev_tl_op;
+	private int inq_last_6mths;
+	private int num_actv_bc_tl;
+	private int num_actv_rev_tl;
+	private int open_act_il;	
+	private String jobStatus;
+	private double income;
+
 	public boolean isApproved() {
 		return approved;
 	}
@@ -25,21 +35,14 @@ public class LoanApplication implements Serializable {
 	}
 
 
-	private int pubRec;
-	private double revol_bal;
-	private double total_rev_hi_lim;
-	private int mo_sin_old_rev_tl_op;
-	private int inq_last_6mths;
-	private int num_actv_bc_tl;
-	private int num_actv_rev_tl;
-	private int open_act_il;
+
 	
 	/**
 	 * constructor for loan aplication.
 	 */
 	public LoanApplication(int loanApplicationId, double loanAmount, int loanDuration, int pubRec, double revol_bal ,
 			double total_rev_hi_lim , int mo_sin_old_rev_tl_op ,int inq_last_6mths ,int num_actv_bc_tl, int num_actv_rev_tl,int open_act_il 
-			  , Date today) {
+			  , Date today, String jobStatus, double income) {
 		this.loanApplicationId = loanApplicationId;
 		this.loanAmount = loanAmount;
 		this.loanDuration = loanDuration;
@@ -52,10 +55,24 @@ public class LoanApplication implements Serializable {
 		this.num_actv_rev_tl = num_actv_rev_tl;
 		this.open_act_il = open_act_il;
 		this.applicationDate = today;
+		this.jobStatus = jobStatus;
+		this.income = income;
 	}
 
 	
 	
+	public String getJobStatus() {
+		return jobStatus;
+	}
+
+
+
+	public double getIncome() {
+		return income;
+	}
+
+
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}

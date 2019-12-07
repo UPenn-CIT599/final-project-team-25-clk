@@ -22,6 +22,7 @@ import model.Database;
 import model.Loan;
 import model.LoanApplication;
 import model.Algorithm;
+import model.ApplicationResult;
 
 public class LoanApplicationPane extends JPanel {
 	private JLabel loanAmountLabel;
@@ -34,6 +35,8 @@ public class LoanApplicationPane extends JPanel {
 	private JLabel numOfCreditCardAccountLabel;
 	private JLabel numOfCheckAccountLabel;
 	private JLabel numOfActiveBorrowingAccountLabel;
+	private JLabel jobStatusLabel;
+	private JLabel incomeLabel;
 	
 
 	private JTextField loanAmountField;
@@ -46,6 +49,8 @@ public class LoanApplicationPane extends JPanel {
 	private JComboBox<Integer> numOfCreditCardAccountField;
 	private JComboBox<Integer> numOfCheckAccountField;
 	private JComboBox<Integer> numOfActiveBorrowingAccountField;
+	private JComboBox<String> jobStatusField;
+	private JTextField incomeField;
 	private JButton submit;
 	
 	private LoanApplicationListener applicationListener;
@@ -64,6 +69,9 @@ public class LoanApplicationPane extends JPanel {
 		numOfCreditCardAccountLabel = new JLabel("How many credit card do you have? (# of cards)"); // 0-10
 		numOfCheckAccountLabel = new JLabel("How many checking account you have? (# of accounts)"); // 0-10
 		numOfActiveBorrowingAccountLabel = new JLabel("How many active borrowing account do you have? (# of accounts)"); // 0-10
+		jobStatusLabel = new JLabel("What is your job status?"); // 0-10
+		incomeLabel = new JLabel("What is your annual income?"); // 0-10
+		
 		
 		Integer[] loadDurationChoice = {12,24,36, 48, 60, 72,84,96,108,120};
 		Integer[] months1To120 = new Integer[121];
@@ -75,6 +83,8 @@ public class LoanApplicationPane extends JPanel {
 		for (int i = 0; i <= 25; i++) {
 			times0To25[i] = i;
 		}
+		
+		String[] jobStatus = {"Full Time", "Part Time", "Unemployed"};
 		
 		loanAmountField = new JTextField(10);
 		loanAmountField.setInputVerifier(new IntegerVerifier());
@@ -89,7 +99,10 @@ public class LoanApplicationPane extends JPanel {
 		numOfCreditCardAccountField = new JComboBox<Integer>(times0To25);
 		numOfCheckAccountField = new JComboBox<Integer>(times0To25);
 		numOfActiveBorrowingAccountField = new JComboBox<Integer>(times0To25);
-
+		jobStatusField = new JComboBox<String>(jobStatus);
+		incomeField = new JTextField(10);
+		incomeField.setInputVerifier(new IntegerVerifier());
+		
 		submit = new JButton("Apply");
 
 		submit.addActionListener(new ActionListener() {
@@ -105,30 +118,30 @@ public class LoanApplicationPane extends JPanel {
 				int num_actv_bc_tl = (int) numOfCreditCardAccountField.getSelectedItem();
 				int num_actv_rev_tl = (int) numOfCheckAccountField.getSelectedItem();
 				int open_act_il = (int) numOfActiveBorrowingAccountField.getSelectedItem();
+				String jobStatus = (String) jobStatusField.getSelectedItem();
+				double income = Double.parseDouble(incomeField.getText());
 				
 				Customer currentCustomer = database.getCurrentCustomer();
 				LoanApplication currentLoanApplication = currentCustomer.addLoanApplication(loanAmount, loanDuration, pubRec, revol_bal ,
-						total_rev_hi_lim ,mo_sin_old_rev_tl_op ,inq_last_6mths , num_actv_bc_tl, num_actv_rev_tl, open_act_il);
-				Algorithm algo = new Algorithm();
-				Algorithm.debtToIncomeScore;
+						total_rev_hi_lim ,mo_sin_old_rev_tl_op ,inq_last_6mths , num_actv_bc_tl, num_actv_rev_tl, open_act_il, jobStatus, income);
 				
 				
 				database.setCurrentLoanApplication(currentLoanApplication);
 				database.updateCustomer(currentCustomer);
 				
 				
-				/// LUKE'S INTEGRATION ////
-				/*
+			
 				ApplicationResult applicationResult = new ApplicationResult();
-				applicationResult.userPennCLKScore(currentLoanApplication);
+				double pennCLKScore = applicationResult.userPennCLKScore(currentLoanApplication);
 				
-				
-				String creditGrade = applicationResult.creditGrade();
-				Boolean isLoanApproved = applicationResult.isCustomerApprovedforLoan();
-				double interestRates = applicationResult.calculateInterestRates();
+				/*
+				String creditGrade = applicationResult.creditGrade(pennCLKScore);
+				Boolean isLoanApproved = applicationResult.isCustomerApprovedforLoan(pennCLKScore);
+				double interestRates = applicationResult.calculateInterestRates(pennCLKScore);
 				double amount = currentLoanApplication.getLoanAmount();
-				int loanPeriod = currentLoanApplication.getLoanDuration()
+				int loanPeriod = currentLoanApplication.getLoanDuration();
 				*/
+				
 				/////// END ///////
 				Boolean isLoanApproved = true;
 				String creditGrade = "A";
