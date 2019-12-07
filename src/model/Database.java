@@ -12,9 +12,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-
-import eventobject.LoanApplicationForm;
-import eventobject.NewUserForm;
 import gui.MainFrame;
 
 public class Database {

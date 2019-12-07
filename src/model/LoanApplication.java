@@ -12,7 +12,19 @@ public class LoanApplication implements Serializable {
 	private double loanAmount;
 	private int loanDuration;
 	private Date applicationDate;
+	private boolean approved;
 	
+	public boolean isApproved() {
+		return approved;
+	}
+
+
+
+	public void setApproved(boolean approved) {
+		this.approved = approved;
+	}
+
+
 	private int pubRec;
 	private double revol_bal;
 	private double total_rev_hi_lim;

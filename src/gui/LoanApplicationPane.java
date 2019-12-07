@@ -6,7 +6,6 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -15,13 +14,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import eventobject.LoanApplicationListener;
-import eventobject.LoanAnalysisListener;
+import eventobject.IntegerVerifier;
 import model.Customer;
 import model.Database;
 import model.Loan;
 import model.LoanApplication;
-import model.Algorithm;
-import model.ApplicationResult;
 
 public class LoanApplicationPane extends JPanel {
 	private JLabel loanAmountLabel;
@@ -66,9 +63,9 @@ public class LoanApplicationPane extends JPanel {
 		numOfActiveBorrowingAccountLabel = new JLabel("How many active borrowing account do you have? (# of accounts)"); // 0-10
 		
 		Integer[] loadDurationChoice = {12,24,36, 48, 60, 72,84,96,108,120};
-		Integer[] months1To120 = new Integer[120];
-		for (int i = 1; i <= 120; i++) {
-			months1To120[i - 1] = i;
+		Integer[] months1To120 = new Integer[121];
+		for (int i = 0; i <= 120; i++) {
+			months1To120[i] = i;
 		}
 		
 		Integer[] times0To25 = new Integer[26];
@@ -77,10 +74,13 @@ public class LoanApplicationPane extends JPanel {
 		}
 		
 		loanAmountField = new JTextField(10);
+		loanAmountField.setInputVerifier(new IntegerVerifier());
 		loanDurationField = new JComboBox<Integer>(loadDurationChoice);
 		paymentHistoryField =new JComboBox<Integer>(months1To120);
 		creditCardUsageField = new JTextField(10);
+		creditCardUsageField.setInputVerifier(new IntegerVerifier());
 		creditCardLimitField = new JTextField(10);
+		creditCardLimitField.setInputVerifier(new IntegerVerifier());
 		monthsSinceFirstCreditCardField = new JComboBox<Integer>(months1To120);
 		timesInquirityToBankField = new JComboBox<Integer>(times0To25);
 		numOfCreditCardAccountField = new JComboBox<Integer>(times0To25);
@@ -135,7 +135,7 @@ public class LoanApplicationPane extends JPanel {
 					message += "Your credit grading is " + creditGrade + "\n";
 					message += "Your interest rates is " + interestRates + "\n";
 
-					
+					currentLoanApplication.setApproved(true);
 					JOptionPane.showMessageDialog(loanApplicationPanel, message );
 					
 					// convert the loan application into a new loan.
@@ -151,9 +151,7 @@ public class LoanApplicationPane extends JPanel {
 					String message = "The loan of " + amount + " has been rejected\n";
 					JOptionPane.showMessageDialog(loanApplicationPanel, message );
 				}
-
 			}
-
 		});
 		
 		layoutComponent();
@@ -205,7 +203,6 @@ public class LoanApplicationPane extends JPanel {
 		///////////// next row /////////////////
 		gc.gridy++;
 
-		
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(creditCardUsageLabel, gc);
@@ -217,7 +214,6 @@ public class LoanApplicationPane extends JPanel {
 		///////////// next row /////////////////
 		gc.gridy++;
 
-		
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(creditCardLimitLabel, gc);
@@ -229,7 +225,6 @@ public class LoanApplicationPane extends JPanel {
 		///////////// next row /////////////////
 		gc.gridy++;
 
-		
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(monthsSinceFirstCreditCardLabel, gc);
@@ -242,7 +237,6 @@ public class LoanApplicationPane extends JPanel {
 		///////////// next row /////////////////
 		gc.gridy++;
 
-		
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(timesInquirityToBankLabel, gc);
@@ -254,7 +248,6 @@ public class LoanApplicationPane extends JPanel {
 		///////////// next row /////////////////
 		gc.gridy++;
 
-		
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(numOfCreditCardAccountLabel, gc);
@@ -266,7 +259,6 @@ public class LoanApplicationPane extends JPanel {
 		///////////// next row /////////////////
 		gc.gridy++;
 
-		
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(numOfCheckAccountLabel, gc);
@@ -279,7 +271,6 @@ public class LoanApplicationPane extends JPanel {
 		///////////// next row /////////////////
 		gc.gridy++;
 
-		
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(numOfActiveBorrowingAccountLabel, gc);

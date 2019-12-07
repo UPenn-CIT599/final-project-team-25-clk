@@ -64,6 +64,27 @@ public class MainFrame extends JFrame {
 				tabbedPane.remove(existingUserPane);
 				existingUserPane = new ExistingUserPane(database);
 				tabbedPane.add("Select User", existingUserPane);
+				
+				existingUserPane.setFormListener(new ExistingUserListener() {
+					public void existingUserSelected() {
+						tabbedPane.remove(loanApplicationPane);
+						tabbedPane.remove(loanPane);
+						
+						loanApplicationPane = new LoanApplicationPane(database);
+						loanPane = new LoanPane(database);
+						
+						tabbedPane.add("Loan Application", loanApplicationPane);
+						tabbedPane.add("Select Loan", loanPane);
+						
+						loanApplicationPane.setFormListener(new LoanApplicationListener() {
+							public void loanApplicationOccured() {
+								tabbedPane.remove(loanPane);
+								loanPane = new LoanPane(database);
+								tabbedPane.add("Select Loan", loanPane);
+							}
+						});
+					}
+				});
 			}
 		});
 		

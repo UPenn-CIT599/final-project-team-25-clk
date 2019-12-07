@@ -38,6 +38,10 @@ public class Customer implements Serializable {
 	
 	// STORAGE FOR LOAN APPLICATION.
 	
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	/**
 	 * adding the loan application into current customer.
 	 * @param loanAmount
