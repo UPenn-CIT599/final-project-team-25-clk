@@ -73,7 +73,7 @@ public class LoanApplicationPane extends JPanel {
 		incomeLabel = new JLabel("What is your annual income? (USD)"); // 0-10
 		paymentHistoryLabel = new JLabel("How many months ago since you last failed to pay your financial obligation? (In Months)"); // 1-120
 		creditCardUsageLabel = new JLabel("How much do you use your credit card per month on average? (USD)");
-		creditCardLimitLabel = new JLabel("What is your credit card limit? (USD)");
+		creditCardLimitLabel = new JLabel("What is your monthly credit card limit? (USD)");
 		monthsSinceFirstCreditCardLabel = new JLabel("How many months ago since your first credit card was approved? (In Months)"); // 1-120
 		timesInquirityToBankLabel = new JLabel("How many times you inquiry the bank about loan application in the last 6 months? (# of times)"); // 0-20
 		numOfCreditCardAccountLabel = new JLabel("How many credit card do you have? (# of cards)"); // 0-10
@@ -170,12 +170,12 @@ public class LoanApplicationPane extends JPanel {
 				
 				if (isLoanApproved) {
 					String message = "The loan application has been approved with details below:\n";
-					message += "-------------------DETAILS -------------------\n";
+					message += "---------------APPLICATION SUMMARY---------------\n";
 					message += "Your requested loan amount is " + loanAmount + "\n";
 					message += "Your credit grading is " + creditGrade + "\n";
 					message += "Your interest rates is " + interestRatesStr + "\n";
 					message += "Your loan period is " + loanPeriod + " months \n";
-					message += "--------------------END------------------------\n";
+					message += "---------------EXTRA INFORMATION---------------\n";
 					message += "The maximum loan amount you can request is " + loanPrincipalStr + "\n";
 					
 
