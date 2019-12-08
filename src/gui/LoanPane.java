@@ -83,11 +83,6 @@ public class LoanPane extends JPanel implements ActionListener {
 			String year = (String) this.year.getSelectedItem();
 			String month = (String) this.month.getSelectedItem();
 			
-			
-			/// LOAN SELECTED
-			/// principal of 100,000
-			// interest of 12%.
-			// loan peirod of 12 months.
 			double monthlyPayment = currentLoan.monthlyPayment();
 			
 			HashMap<Integer, Double> loanSchedule = currentLoan.mapMonthToPaymentDue();
@@ -183,11 +178,11 @@ public class LoanPane extends JPanel implements ActionListener {
 		
 		gc.gridx = 0;
 		gc.anchor = GridBagConstraints.LINE_END;
-		loanInfo.add(new JLabel("----------------------------"), gc);
+		loanInfo.add(new JLabel("--------------"), gc);
 		
 		gc.gridx = 1;
 		gc.anchor = GridBagConstraints.LINE_START;
-		loanInfo.add(new JLabel("------------PAYMENT ANALIZER------------------"), gc);
+		loanInfo.add(new JLabel("------------PAYMENT ANALYZER------------------"), gc);
 		
 		///////////// next row /////////////////
 		gc.gridy++;

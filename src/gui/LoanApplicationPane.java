@@ -68,8 +68,9 @@ public class LoanApplicationPane extends JPanel {
 	 */
 	public LoanApplicationPane(Database database) {
 		Container loanApplicationPanel = this;
-		loanAmountLabel = new JLabel("Loan Application Amount: (USD)");
+		loanAmountLabel = new JLabel("Loan Amount: (USD)");
 		loanDurationLabel = new JLabel("Loan Duration: (In Months)"); // 12,24,36,48,60, 72
+		incomeLabel = new JLabel("What is your annual income? (USD)"); // 0-10
 		paymentHistoryLabel = new JLabel("How many months ago since you last failed to pay your financial obligation? (In Months)"); // 1-120
 		creditCardUsageLabel = new JLabel("How much do you use your credit card per month on average? (USD)");
 		creditCardLimitLabel = new JLabel("What is your credit card limit? (USD)");
@@ -79,8 +80,7 @@ public class LoanApplicationPane extends JPanel {
 		numOfCheckAccountLabel = new JLabel("How many checking account you have? (# of accounts)"); // 0-10
 		numOfActiveBorrowingAccountLabel = new JLabel("How many active borrowing account do you have? (# of accounts)"); // 0-10
 		jobStatusLabel = new JLabel("What is your job status?"); // 0-10
-		incomeLabel = new JLabel("What is your annual income? USD"); // 0-10
-		lengthOfEmploymentLabel = new JLabel("What is your length of employment? Years"); // 0-10
+		lengthOfEmploymentLabel = new JLabel("What is your length of employment? (in Years)"); // 0-10
 		
 		
 		Integer[] loadDurationChoice = {12,24,36, 48, 60, 72,84,96,108,120};
@@ -105,6 +105,8 @@ public class LoanApplicationPane extends JPanel {
 		loanAmountField = new JTextField(10);
 		loanAmountField.setInputVerifier(new IntegerVerifier());
 		loanDurationField = new JComboBox<Integer>(loadDurationChoice);
+		incomeField = new JTextField(10);
+		incomeField.setInputVerifier(new IntegerVerifier());
 		paymentHistoryField =new JComboBox<Integer>(months1To120);
 		creditCardUsageField = new JTextField(10);
 		creditCardUsageField.setInputVerifier(new IntegerVerifier());
@@ -116,8 +118,7 @@ public class LoanApplicationPane extends JPanel {
 		numOfCheckAccountField = new JComboBox<Integer>(times0To25);
 		numOfActiveBorrowingAccountField = new JComboBox<Integer>(times0To25);
 		jobStatusField = new JComboBox<String>(jobStatus);
-		incomeField = new JTextField(10);
-		incomeField.setInputVerifier(new IntegerVerifier());
+		
 		lengthOfEmploymentField = new JComboBox<Integer>(zeroTo100);
 		
 		
@@ -168,19 +169,20 @@ public class LoanApplicationPane extends JPanel {
 
 				
 				if (isLoanApproved) {
-					String message = "The loan of  has been approved\n";
-					message += "Your loan amount is " + loanPrincipalStr + "\n";
+					String message = "The loan application has been approved with details below:\n";
+					message += "-------------------DETAILS -------------------\n";
+					message += "Your requested loan amount is " + loanAmount + "\n";
 					message += "Your credit grading is " + creditGrade + "\n";
 					message += "Your interest rates is " + interestRatesStr + "\n";
-					message += "Your loan period is " + loanPeriod + "\n";
+					message += "Your loan period is " + loanPeriod + " months \n";
+					message += "--------------------END------------------------\n";
+					message += "The maximum loan amount you can request is " + loanPrincipalStr + "\n";
 					
 
 					currentLoanApplication.setApproved(true);
 					JOptionPane.showMessageDialog(loanApplicationPanel, message );
 					
-					// convert the loan application into a new loan.
-					
-					Loan currentLoan = currentCustomer.addLoan(loanPrincipal , interestRates, loanPeriod, creditGrade );
+					Loan currentLoan = currentCustomer.addLoan(loanAmount , interestRates, loanPeriod, creditGrade );
 					database.setCurrentLoan(currentLoan);
 					database.updateCustomer(currentCustomer);
 					
@@ -188,10 +190,13 @@ public class LoanApplicationPane extends JPanel {
 						applicationListener.loanApplicationOccured();
 					}
 				} else {
-					String message = "The loan of has been rejected\n";
+					String message = "The loan application has been rejected with details below:\n";
+					message += "------------DETAILS -------------\n";
+					message += "Your requested loan amount is " + loanAmount + "\n";
 					message += "Your credit grading is " + creditGrade + "\n";
 					message += "Your interest rates is " + interestRates + "\n";
-					message += "Your loan period is " + loanPeriod + "\n";
+					message += "Your loan period is " + loanPeriod + " months\n";
+					message += "------------END-------------------\n";
 					JOptionPane.showMessageDialog(loanApplicationPanel, message );
 				}
 			}
@@ -233,6 +238,17 @@ public class LoanApplicationPane extends JPanel {
 		gc.gridx = 1;
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(loanDurationField, gc);
+		
+		///////////// next row /////////////////
+		gc.gridy++;
+		
+		gc.gridx = 0;
+		gc.anchor = GridBagConstraints.LINE_START;
+		add(incomeLabel, gc);
+		
+		gc.gridx = 1;
+		gc.anchor = GridBagConstraints.LINE_START;
+		add(incomeField, gc);
 		
 		///////////// next row /////////////////
 		gc.gridy++;
@@ -336,16 +352,7 @@ public class LoanApplicationPane extends JPanel {
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(jobStatusField, gc);
 	
-		///////////// next row /////////////////
-		gc.gridy++;
-		
-		gc.gridx = 0;
-		gc.anchor = GridBagConstraints.LINE_START;
-		add(incomeLabel, gc);
-		
-		gc.gridx = 1;
-		gc.anchor = GridBagConstraints.LINE_START;
-		add(incomeField, gc);
+
 		
 		///////////// next row /////////////////
 		gc.gridy++;
