@@ -14,40 +14,34 @@ public class AlgorithmTest {
 	int num_actv_bc_tl = 1; //number of active check cards
 	int num_actv_rev_tl = 1; //number of active credit cards
 	int open_act_il = 1; //number of active borrowing (loan) accounts
-	
-	
+
+
 	@Test
 	public void testPaymentHistoryScore() {
-	//the number of months since the most recent derogatory public record
-		assertEquals(10, algo.paymentHistoryScore(pubRec),0);
+		assertEquals(220, algo.paymentHistoryScore(pubRec),0);
 	}
 
 	@Test
 	public void testAmountsOwedScore() {
-		assertEquals(65.0, algo.amountsOwedScore(revol_bal, total_rev_hi_lim), 0);
+		assertEquals(770, algo.amountsOwedScore(revol_bal, total_rev_hi_lim), 0);
 	}
 
 	@Test
 	public void testCreditHistoryScore() {
-		assertEquals(75, algo.creditHistoryScore(mo_sin_old_rev_tl_op),0);
+		assertEquals(760, algo.creditHistoryScore(mo_sin_old_rev_tl_op),0);
 	}
 
 	@Test
 	public void testPursuitofNewCreditScore() {
-		assertEquals(45, algo.pursuitofNewCreditScore(inq_last_6mths),0);
+		assertEquals(450, algo.pursuitofNewCreditScore(inq_last_6mths),0);
 	}
 
 	@Test
 	public void testCreditMixScore() {
-		assertEquals(25, algo.creditMixScore(num_actv_bc_tl, num_actv_rev_tl, open_act_il),0);
+		assertEquals(250, algo.creditMixScore(num_actv_bc_tl, num_actv_rev_tl, open_act_il),0);
 	}
 
-	@Test
-	public void testCalculatePennCLKscore() {
-		assertEquals(518.0, algo.calculatePennCLKscore(pubRec, revol_bal, total_rev_hi_lim, 
-				mo_sin_old_rev_tl_op, inq_last_6mths, num_actv_bc_tl, num_actv_rev_tl, open_act_il), 0.0);
-		
-		
-	}
 
 }
+
+
