@@ -18,7 +18,7 @@ public class Algorithm {
 	 * non-parameter constructor will be used here fore testing.
 	 */
 	
-	//This is the constructor . added by chian.
+	//This is the constructor . added by chian. hi chian
 	public Algorithm () {
 
 	}
