@@ -87,7 +87,7 @@ public class LoanPane extends JPanel implements ActionListener {
 			
 			HashMap<Integer, Double> loanSchedule = currentLoan.mapMonthToPaymentDue();
 			int installmentNum = currentLoan.calcInstallNumFrDateSelected(year + month);
-			System.out.println(loanSchedule);
+			
 			
 			String futurePrincipalDue = currentLoan.amountDue(installmentNum, amount);
 			

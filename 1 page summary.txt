@@ -1,0 +1,27 @@
+﻿1 PAGE SUMMARY
+Yeong Hun (Luke) Lee, Kyusub (David) Chung, Chian Yee
+
+
+Loan Simulator Application
+
+
+Project Description (4-5 sentences)
+This application will enable the customer to simulate whether his/her potential loan applications are likely to get approved or disapproved. The user will have to type in a few questions that the application is asking, and based on the information, he/she will be assigned the application result. If the application is approved, then the user will be provided the interest rates, the possible loan amount, the approved loan period, and the credit grade. After this, the user can also run a simulator which displays the remaining principal and interests.
+
+
+Work Breakdown
+
+
+* Yeong Hun (Luke) Lee
+   * Created an algorithm to assign the user’s credit grades, interest rates, the loan amount and the loan period
+   * Sourced the data file which contains the real life loan application scenarios - more than 1 million data
+   * Read the source file and applied the algorithm created into the file.
+* Kyusub (David) Chung
+-   Calculate monthly payment 
+-   Create a method to create a loan schedule that keeps track of principal payback schedule for each month
+-   Implement method to convert date chosen by user to corresponding installment number
+-   Write method to provide feedback to the user according to the input (the amount the user is willing to pay) given by the user
+* Chian Yee
+   * Building the user interface with java swing. 
+   * Design the flow and integrate the team’s work into one application.
+   * Building the file saving feature of the app.
