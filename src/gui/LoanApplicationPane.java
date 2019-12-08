@@ -71,16 +71,16 @@ public class LoanApplicationPane extends JPanel {
 		loanAmountLabel = new JLabel("Loan Amount: (USD)");
 		loanDurationLabel = new JLabel("Loan Duration: (In Months)"); // 12,24,36,48,60, 72
 		incomeLabel = new JLabel("What is your annual income? (USD)"); // 0-10
-		paymentHistoryLabel = new JLabel("How many months ago since you last failed to pay your financial obligation? (In Months)"); // 1-120
+		paymentHistoryLabel = new JLabel("How many months ago you last failed to pay your financial obligation? (In Months)"); // 1-120
 		creditCardUsageLabel = new JLabel("How much do you use your credit card per month on average? (USD)");
 		creditCardLimitLabel = new JLabel("What is your monthly credit card limit? (USD)");
-		monthsSinceFirstCreditCardLabel = new JLabel("How many months ago since your first credit card was approved? (In Months)"); // 1-120
-		timesInquirityToBankLabel = new JLabel("How many times you inquiry the bank about loan application in the last 6 months? (# of times)"); // 0-20
+		monthsSinceFirstCreditCardLabel = new JLabel("How many months ago was your first credit card approved? (In Months)"); // 1-120
+		timesInquirityToBankLabel = new JLabel("How many times did you make inquiry the bank about loan application in the last 6 months? (# of times)"); // 0-20
 		numOfCreditCardAccountLabel = new JLabel("How many credit card do you have? (# of cards)"); // 0-10
 		numOfCheckAccountLabel = new JLabel("How many checking account you have? (# of accounts)"); // 0-10
 		numOfActiveBorrowingAccountLabel = new JLabel("How many active borrowing account do you have? (# of accounts)"); // 0-10
 		jobStatusLabel = new JLabel("What is your job status?"); // 0-10
-		lengthOfEmploymentLabel = new JLabel("What is your length of employment? (in Years)"); // 0-10
+		lengthOfEmploymentLabel = new JLabel("How long have you been working in your current or previous job? (in Years)"); // 0-10
 		
 		
 		Integer[] loadDurationChoice = {12,24,36, 48, 60, 72,84,96,108,120};
@@ -175,7 +175,7 @@ public class LoanApplicationPane extends JPanel {
 					message += "Your credit grading is " + creditGrade + "\n";
 					message += "Your interest rates is " + interestRatesStr + "\n";
 					message += "Your loan period is " + loanPeriod + " months \n";
-					message += "---------------EXTRA INFORMATION---------------\n";
+					message += "----------------EXTRA INFORMATION----------------\n";
 					message += "The maximum loan amount you can request is " + loanPrincipalStr + "\n";
 					
 
