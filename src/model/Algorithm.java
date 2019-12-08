@@ -6,29 +6,52 @@ import gui.LoanApplicationPane;
 
 public class Algorithm {
 
+	/***
+	 * The maximum pennCLK score the user can acquire is 850
+	 * The minimum pennCLK score the user can acquire is 300
+	 */
 	public static final double HIGHESTCONVERSIONBASE = 850;
 	public static final double LOWESTCONVERSIONBASE = 300;
 
-	/***
-	 * Customer's information in ArrayListwill be the parameter for Algorithm constructor.
-	 * @param userInput
-	 */
 
 	/***
 	 * non-parameter constructor will be used here fore testing.
 	 */
 	
-	
 	public Algorithm () {
 
 	}
 
+	
 	/***
-	 * First component of PennCLKscore - Payment History 35%
+	 * This is the first component of calculating PennCLK score. According to the user and the datafile's loan amount
+	 * and annual income, it will provide scores differently.
+	 * @param AnnualIncome
+	 * @param loanAmount: applied loan amount
+	 * @return incomeScore
+	 */
+	public static double incomeScore (double AnnualIncome, double loanAmount) {
+		double incomeScore = 0;
+		if ((loanAmount / AnnualIncome) > 1 && (loanAmount / AnnualIncome) <= 1.5) {
+			incomeScore = 480;
+		} else if ((loanAmount / AnnualIncome) <= 1 && (loanAmount / AnnualIncome) > 0.5 ){
+			incomeScore = 600;
+		} else if ((loanAmount / AnnualIncome) <= 0.5 && (loanAmount / AnnualIncome) > 0 ){
+			incomeScore = 1050;
+		} else if ((loanAmount / AnnualIncome) > 1.5 && (loanAmount / AnnualIncome) < 2) {
+			incomeScore = 380;
+		} else if ((loanAmount / AnnualIncome) >= 2) {
+			incomeScore = -100000;
+		}
+		return incomeScore;
+	}
+	
+	/***
+	 * This is the second component of PennCLKscore
 	 * Payment History represents the number of months since the most
 	 * recent derogatory public record
-	 * @param pubRec = public record -> should be replaced by userInput instance.
-	 * @return paymentHistoryScore: score range 0 - 75.
+	 * @param pubRec = public record
+	 * @return paymentHistoryScore
 	 */
 
 	public static double paymentHistoryScore (int pubRec) {
@@ -50,11 +73,11 @@ public class Algorithm {
 	}
 
 	/***
-	 * This is the second component of PennCLKscore - Amounts Owed 30%
+	 * This is the third component of PennCLKscore.
 	 * This represents the ratio of the user's revolving credit over his allocated
 	 * maximum revolving limit.
-	 * @param revol_bal: user's current maximum revolving credit -> should be replaced by userInput instance.
-	 * @param total_rev_hi_lim: user's allocated revolving credit limit -> should be replaced by userInput instance.
+	 * @param revol_bal: user's current maximum revolving credit
+	 * @param total_rev_hi_lim: user's allocated revolving credit limit
 	 * @return amountsOwedScore
 	 */
 
@@ -81,10 +104,10 @@ public class Algorithm {
 		return amountsOwedScore;
 	}
 	/***
-	 * This is the third component of PennCLK Score model - Credit History 15%
+	 * This is the fourth component of PennCLK Score model
 	 * This represents the number of months it passed since the user created his first
 	 * revolving credit account
-	 * @param mo_sin_old_rev_tl_op: number of months since -> should be replaced by userInput instance.
+	 * @param mo_sin_old_rev_tl_op: number of months since
 	 * the user's creation of revolving credit 
 	 * @return creditHistoryScore
 	 */
@@ -104,8 +127,7 @@ public class Algorithm {
 	}
 
 	/***
-	 * This is the fourth component of PennCLK Score model 
-	 * - Pursuit of New Credit 10%
+	 * This is the fifth component of PennCLK Score model 
 	 * This represents how many inquiries the user has made for borrowing
 	 * in the last 6 months
 	 * @param inq_last_6mths
@@ -130,15 +152,17 @@ public class Algorithm {
 	}
 
 	/***
-	 * This is the fifth component of PennCLK Score model - creditMixScore 10%
+	 * This is the sixth component of PennCLK Score model
 	 * The user will provide information about whether they have:
-	 * 1) credit cards (=revolving credit)
-	 * 2) check cards (= bank cards)
+	 * 1) check cards (= bank cards)
+	 * 2) credit cards (=revolving credit)
 	 * 3) existing loan accounts (= installment loans)
 	 * 
-	 * If all they have it, then their creditmix score will increase
-	 * 
-	 * @return
+	 * Depending on the number of accounts they have, then their creditmix score will vary
+	 * @param num_actv_bc_tl: number of active bank card accounts
+	 * num_actv_rev_tl: number of active revolving accounts
+	 * open_act_il: number of active existing loan accounts
+	 * @return open_act_il
 	 */
 	public static double creditMixScore (int num_actv_bc_tl, int num_actv_rev_tl, int open_act_il) {
 
@@ -163,16 +187,21 @@ public class Algorithm {
 	}
 
 	/***
-	 * Example of how PennCLK Score is calculated
-	 * @param all of the required information from the user and from the database.
-	 * @return
+	 * This is the seventh component of PennCLK Score model
+	 * The user will provide information whether he/she has FT, PT or unemployed
+	 * If the user has FT job, he/she will be assigned the highest score.
+	 * @param jobStatus of the user
+	 * @return jobScore
+	 * 
+	 * Note that the database will be automatically assumed as "Full Time" as no such
+	 * information was provided from the raw file in the first place.
 	 */
-
-
 	public static double jobScore (String jobStatus) {
 		int jobScore = 0;
 		if (jobStatus.equals("Full Time")) {
 			jobScore = 760;
+		} else if (jobStatus.equals("Part Time")) {
+			jobScore = 500;
 		} else {
 			jobScore = 340;
 		}
@@ -180,22 +209,12 @@ public class Algorithm {
 		return jobScore;
 	}
 	
-	public static double incomeScore (double AnnualIncome, double loanAmount) {
-		double incomeScore = 0;
-		if ((loanAmount / AnnualIncome) > 1 && (loanAmount / AnnualIncome) <= 1.5) {
-			incomeScore = 480;
-		} else if ((loanAmount / AnnualIncome) <= 1 && (loanAmount / AnnualIncome) > 0.5 ){
-			incomeScore = 600;
-		} else if ((loanAmount / AnnualIncome) <= 0.5 && (loanAmount / AnnualIncome) > 0 ){
-			incomeScore = 1050;
-		} else if ((loanAmount / AnnualIncome) > 1.5 && (loanAmount / AnnualIncome) < 2) {
-			incomeScore = 380;
-		} else if ((loanAmount / AnnualIncome) >= 2) {
-			incomeScore = -100000;
-		}
-		return incomeScore;
-	}
 
+	/***
+	 * This method calculates PennCLK Scores
+	 * @param all of the required information from the user and from the database.
+	 * @return pennCLK score which becomes the ground for assigning the final credit grade.
+	 */
 	public static double calculatePennCLKscore (double annualIncome, double loanAmount, int pubRec, int mo_sin_old_rev_tl_op,  
 			 int inq_last_6mths, int num_actv_bc_tl, int num_actv_rev_tl,int open_act_il,
 			 double revol_bal, double total_rev_hi_lim, String jobStatus ) {

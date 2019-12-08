@@ -4,10 +4,9 @@ public class LoanFile {
 	private String pubRec, mo_sin_old_rev_tl_op, inq_last_6mths, num_actv_bc_tl, 
 	num_actv_rev_tl, open_act_il, revol_bal, total_rev_hi_lim, interestRate, incomeAmount, loanAmount;
 
-	/*
+	/***
 	 * Creation of a constructor and instance variables.
 	 */
-
 
 	public LoanFile(String incomeAmount, String loanAmount,String pubRec, String mo_sin_old_rev_tl_op, String inq_last_6mths, String num_actv_bc_tl,
 			String num_actv_rev_tl, String open_act_il, String revol_bal, String total_rev_hi_lim, String interestRate) {
@@ -26,25 +25,10 @@ public class LoanFile {
 
 	}
 
-	/*
+
+	/***
 	 * Overriding toString method to display an arraylist with loan file object.
 	 */
-
-	public String getIncomeAmount() {
-		return incomeAmount;
-	}
-
-	public String getLoanAmount() {
-		return loanAmount;
-	}
-
-
-	public String getPubRec() {
-		return pubRec;
-	}
-
-
-	
 
 	@Override
 	public String toString() {
@@ -55,72 +39,94 @@ public class LoanFile {
 				+ ", interestRate=" + interestRate + "]";
 	}
 
-	public void setPubRec(String pubRec) {
-		this.pubRec = pubRec;
+	/***
+	 * getter method for public record
+	 * @return public record
+	 */
+	
+	public String getPubRec() {
+		return pubRec;
 	}
 
+	/***
+	 * getter method for number of months since
+	 * the user's creation of revolving credit 
+	 */
+	
 	public String getMo_sin_old_rev_tl_op() {
 		return mo_sin_old_rev_tl_op;
 	}
 
-	public void setMo_sin_old_rev_tl_op(String mo_sin_old_rev_tl_op) {
-		this.mo_sin_old_rev_tl_op = mo_sin_old_rev_tl_op;
-	}
-
+	/***
+	 * getter method for the number of inquiries the
+	 * user made for the last 6 months
+	 */
 	public String getInq_last_6mths() {
 		return inq_last_6mths;
 	}
 
-	public void setInq_last_6mths(String inq_last_6mths) {
-		this.inq_last_6mths = inq_last_6mths;
-	}
-
+	/***
+	 * getter method for the number of active
+	 * bank card accounts
+	 */
 	public String getNum_actv_bc_tl() {
 		return num_actv_bc_tl;
 	}
 
-	public void setNum_actv_bc_tl(String num_actv_bc_tl) {
-		this.num_actv_bc_tl = num_actv_bc_tl;
-	}
-
+	/***
+	 * getter method for the number of active
+	 * credit card accounts
+	 */
 	public String getNum_actv_rev_tl() {
 		return num_actv_rev_tl;
 	}
 
-	public void setNum_actv_rev_tl(String num_actv_rev_tl) {
-		this.num_actv_rev_tl = num_actv_rev_tl;
-	}
-
+	/***
+	 * getter method for the number of existing loan
+	 * accounts
+	 */
 	public String getOpen_act_il() {
 		return open_act_il;
 	}
 
-	public void setOpen_act_il(String open_act_il) {
-		this.open_act_il = open_act_il;
-	}
-
+	/***
+	 * getter method for the current credit card usage per month
+	 */
 	public String getRevol_bal() {
 		return revol_bal;
 	}
 
-	public void setRevol_bal(String revol_bal) {
-		this.revol_bal = revol_bal;
-	}
-
+	/***
+	 * getter method for the total credit card limit per month
+	 */
 	public String getTotal_rev_hi_lim() {
 		return total_rev_hi_lim;
 	}
 
-	public void setTotal_rev_hi_lim(String total_rev_hi_lim) {
-		this.total_rev_hi_lim = total_rev_hi_lim;
-	}
-	
+
+	/***
+	 * getter method for the datafile's interest rates
+	 */
 	public String getInterestRate() {
 		return interestRate;
 	}
 
-	public void setInterestRate(String interestRate) {
-		this.interestRate = interestRate;
+	/***
+	 * getter method for the annual income of the datafile 
+	 */
+	public String getIncomeAmount() {
+		return incomeAmount;
 	}
+
+	/***
+	 * getter method for the loan amount that the user applied
+	 * or the datafile's existing borrowing amount history.
+	 */
+	public String getLoanAmount() {
+		return loanAmount;
+	}
+
+
 }
+
 
