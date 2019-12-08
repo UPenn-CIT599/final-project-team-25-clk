@@ -150,7 +150,7 @@ public class LoanApplicationPane extends JPanel {
 				database.updateCustomer(currentCustomer);
 				
 				ApplicationResult applicationResult = new ApplicationResult();
-				ArrayList<LoanFile> loan = applicationResult.fileReader("loan_raw_sample.csv");
+				ArrayList<LoanFile> loan = applicationResult.fileReader("loan_original.csv");
 				
 				DecimalFormat df = new DecimalFormat("#.00");
 				double pennCLKScore = ApplicationResult.userPennCLKScore(currentLoanApplication);
