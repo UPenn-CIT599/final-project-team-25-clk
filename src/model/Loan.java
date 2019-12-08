@@ -304,26 +304,5 @@ public class Loan implements Serializable {
 	}
 
 }	
-//	public static void main(String[] args) {
-//		int loanId = 1234;
-//		double principal = 20000;
-//		double rate = 0.075;
-//		int loanPeriod = 60;
-//		String creditGrade = "A";
-//		Date today = new Date();
-//		Loan k = new Loan(loanId, principal, rate, loanPeriod, creditGrade, today);
-//		
-//		System.out.println("starting date is " + k.getLoanStartingDate());
-//		double actual = k.monthlyPayment(20000, 0.075, 60);		
-//		System.out.println(actual);
-//		
-//		HashMap<Integer, Double > testMap = k.mapMonthToPaymentDue();
-//		
-////		int number = k.calcInstallNumFrDateSelected("202001");
-//		int number = 3;
-//		System.out.println("installment number is " + number);
-//		
-//		k.amountDue(3, 2000);
-//	}
-	
+
 

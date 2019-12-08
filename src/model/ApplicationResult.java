@@ -5,7 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-
+/***
+ * 
+ * @author YEONG HUN LUKE LEE
+ *
+ */
 public class ApplicationResult {
 	ArrayList<String> columns = new ArrayList<>();
 	ArrayList<LoanFile> loan = new ArrayList<>();

@@ -3,7 +3,11 @@ import java.util.ArrayList;
 
 import gui.LoanApplicationPane;
 
-
+/***
+ *
+ * @author YEONG HUN LUKE LEE
+ *
+ */
 public class Algorithm {
 
 	/***
