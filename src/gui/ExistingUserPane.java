@@ -5,8 +5,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
@@ -14,18 +12,24 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 import eventobject.ExistingUserListener;
 import model.Customer;
 import model.Database;
-import model.Loan;
 
+/**
+ * This class is responsible for allowing user to select itself.
+ *
+ */
 public class ExistingUserPane extends JPanel implements ActionListener {
 	private JComboBox<Item> userSelection;
 	private Database database;
 	private ExistingUserListener existingUserListener;
 	
+	/**
+	 * constructor to initialize the user selection screen.
+	 * @param database
+	 */
 	public ExistingUserPane(Database database) {
 		setLayout(new BorderLayout());
 		
@@ -44,6 +48,9 @@ public class ExistingUserPane extends JPanel implements ActionListener {
 		
 	}
 	
+	/**
+	 * this method is triggered when a user select itself.
+	 */
 	public void actionPerformed(ActionEvent e) {
 		JComboBox<Item> cb = (JComboBox<Item>)e.getSource();
 		Item user = (Item) cb.getSelectedItem();
@@ -61,6 +68,10 @@ public class ExistingUserPane extends JPanel implements ActionListener {
 		
 	}
 	
+	/**
+	 * refresh the current customer panel when a user select itself.
+	 * @param currentCustomer
+	 */
 	public void repaintWithCurrentCustomer(Customer currentCustomer) {
 		JPanel userInfo = new JPanel();
 		GridBagLayout gbl = new GridBagLayout();

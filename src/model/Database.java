@@ -14,24 +14,43 @@ import java.util.LinkedList;
 import java.util.List;
 import gui.MainFrame;
 
+/**
+ * The database class is responsible for storing information into file.
+ *
+ */
 public class Database {
-	
-	/// these are the four things we need to save into file.
 	private List<Customer> customers;
 	private Customer currentCustomer;
 	private Loan currentLoan;
 	private LoanApplication currentLoanApplication;
 	
+	/**
+	 * database constructor.
+	 */
+	public Database() {
+		customers = new LinkedList<Customer>();
+	}
 	
+	/**
+	 * get current loan application in this session.
+	 * @return
+	 */
 	public LoanApplication getCurrentLoanApplication() {
 		return currentLoanApplication;
 	}
 
+	/**
+	 * set current loan application in this session.
+	 * @param currentLoanApplication
+	 */
 	public void setCurrentLoanApplication(LoanApplication currentLoanApplication) {
 		this.currentLoanApplication = currentLoanApplication;
 	}
 
-	// star
+	/**
+	 * set current customer  in this session.
+	 * @return
+	 */
 	public Customer getCurrentCustomer() {
 		return currentCustomer;
 	}
@@ -45,7 +64,7 @@ public class Database {
 	}
 	
 	/**
-	 * get current loan
+	 * get current loan for this session.
 	 * @return
 	 */
 	public Loan getCurrentLoan() {
@@ -53,22 +72,13 @@ public class Database {
 	}
 		
 	/**
-	 * set current loan.
+	 * set current loan for this session.
 	 * @param currentLoan
 	 */
 	public void setCurrentLoan(Loan currentLoan) {
 		this.currentLoan = currentLoan;
 	}
 
-	/**
-	 * database constructor.
-	 */
-	public Database() {
-		customers = new LinkedList<Customer>();
-	}
-	
-	/////////////////// STORAGE FOR CUSTOMERS //////////////////////////
-	
 	/**
 	 * Add a new customer into the database.
 	 * @param name
@@ -89,7 +99,6 @@ public class Database {
 		}
 		return customer;
 	}
-	
 	
 	/**
 	 * update customer object.
@@ -128,12 +137,9 @@ public class Database {
 		}
 		return null;
 	}
-	
-	
-	//////// SAVING OF OBJECTS INTO FILE////////////
-	
+		
 	/**
-	 * Save list of customers into file.
+	 * Save list of customers into file. default to desktop.
 	 * @throws IOException
 	 */
 	public void saveCustomerToFile() throws IOException {
@@ -150,7 +156,7 @@ public class Database {
 	
 	
 	/**
-	 * load list of customers from file.
+	 * load list of customers from file. default is desktop.
 	 * @throws IOException
 	 */
 	public void loadCustomerFromFile() throws IOException {
@@ -166,7 +172,6 @@ public class Database {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		
 		ois.close();
 	}
 }

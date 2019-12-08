@@ -5,6 +5,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
+/**
+ * Loan application class.
+ *
+ */
 public class LoanApplication implements Serializable {
 
 	private static final long serialVersionUID = 6248986646073694934L;
@@ -23,26 +27,14 @@ public class LoanApplication implements Serializable {
 	private int open_act_il;	
 	private String jobStatus;
 	private double income;
-
-	public boolean isApproved() {
-		return approved;
-	}
-
-
-
-	public void setApproved(boolean approved) {
-		this.approved = approved;
-	}
-
-
-
+	private int lengthOfEmployment;
 	
 	/**
-	 * constructor for loan aplication.
+	 * constructor for loan application.
 	 */
 	public LoanApplication(int loanApplicationId, double loanAmount, int loanDuration, int pubRec, double revol_bal ,
 			double total_rev_hi_lim , int mo_sin_old_rev_tl_op ,int inq_last_6mths ,int num_actv_bc_tl, int num_actv_rev_tl,int open_act_il 
-			  , Date today, String jobStatus, double income) {
+			  , Date today, String jobStatus, double income, int lengthOfEmployment) {
 		this.loanApplicationId = loanApplicationId;
 		this.loanAmount = loanAmount;
 		this.loanDuration = loanDuration;
@@ -57,78 +49,118 @@ public class LoanApplication implements Serializable {
 		this.applicationDate = today;
 		this.jobStatus = jobStatus;
 		this.income = income;
+		this.lengthOfEmployment = lengthOfEmployment;
 	}
 
-	
-	
+
+	public int getLengthOfEmployment() {
+		return lengthOfEmployment;
+	}
+
+	/**
+	 * return the boolean of whether loan is approved or not.
+	 * @return
+	 */
+	public boolean isApproved() {
+		return approved;
+	}
+
+
+	/**
+	 * setting approval state of loan application.
+	 * @param approved
+	 */
+	public void setApproved(boolean approved) {
+		this.approved = approved;
+	}
+
+	/**
+	 * get the job status of applicant.
+	 * @return
+	 */
 	public String getJobStatus() {
 		return jobStatus;
 	}
 
 
-
+	/**
+	 * get income level of job application.
+	 * @return
+	 */
 	public double getIncome() {
 		return income;
 	}
 
-
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-
-
+	/**
+	 * get public record.
+	 * @return
+	 */
 	public int getPubRec() {
 		return pubRec;
 	}
 
 
-
+	/**
+	 * get revolving balance.
+	 * @return
+	 */
 	public double getRevol_bal() {
 		return revol_bal;
 	}
 
 
-
+	/**
+	 * get total revolving balance limit.
+	 * @return
+	 */
 	public double getTotal_rev_hi_lim() {
 		return total_rev_hi_lim;
 	}
 
 
-
+	/**
+	 * get month since old revolving limit breach.
+	 * @return
+	 */
 	public int getMo_sin_old_rev_tl_op() {
 		return mo_sin_old_rev_tl_op;
 	}
 
 
-
+	/**
+	 * get inquiry to bank in the last 6 months.
+	 * @return
+	 */
 	public int getInq_last_6mths() {
 		return inq_last_6mths;
 	}
 
 
-
+	/**
+	 * get number of active bank account.
+	 * @return
+	 */
 	public int getNum_actv_bc_tl() {
 		return num_actv_bc_tl;
 	}
 
 
-
+	/**
+	 * get number of active credit cards.
+	 * @return
+	 */
 	public int getNum_actv_rev_tl() {
 		return num_actv_rev_tl;
 	}
 
 
-
+	/**
+	 * get active current account.
+	 * @return
+	 */
 	public int getOpen_act_il() {
 		return open_act_il;
 	}
-
-
-
-
-	
 
 	/**
 	 * get loan application id
@@ -138,7 +170,6 @@ public class LoanApplication implements Serializable {
 	public int getLoanApplicationId() {
 		return loanApplicationId;
 	}
-
 
 	/**
 	 * get loan amount

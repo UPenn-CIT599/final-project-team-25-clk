@@ -5,6 +5,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -13,17 +15,20 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.sun.javafx.scene.traversal.Algorithm;
-
 import eventobject.LoanApplicationListener;
 import eventobject.IntegerVerifier;
 import model.Customer;
 import model.Database;
 import model.Loan;
 import model.LoanApplication;
+import model.LoanFile;
 import model.Algorithm;
 import model.ApplicationResult;
 
+/**
+ * this is the panel for applying for loan.
+ *
+ */
 public class LoanApplicationPane extends JPanel {
 	private JLabel loanAmountLabel;
 	private JLabel loanDurationLabel;
@@ -37,6 +42,7 @@ public class LoanApplicationPane extends JPanel {
 	private JLabel numOfActiveBorrowingAccountLabel;
 	private JLabel jobStatusLabel;
 	private JLabel incomeLabel;
+	private JLabel lengthOfEmploymentLabel;
 	
 
 	private JTextField loanAmountField;
@@ -50,13 +56,16 @@ public class LoanApplicationPane extends JPanel {
 	private JComboBox<Integer> numOfCheckAccountField;
 	private JComboBox<Integer> numOfActiveBorrowingAccountField;
 	private JComboBox<String> jobStatusField;
+	private JComboBox<Integer> lengthOfEmploymentField;
 	private JTextField incomeField;
 	private JButton submit;
 	
 	private LoanApplicationListener applicationListener;
 
-	
-
+	/**
+	 * constructor for loan application panel.
+	 * @param database
+	 */
 	public LoanApplicationPane(Database database) {
 		Container loanApplicationPanel = this;
 		loanAmountLabel = new JLabel("Loan Application Amount: (USD)");
@@ -70,7 +79,8 @@ public class LoanApplicationPane extends JPanel {
 		numOfCheckAccountLabel = new JLabel("How many checking account you have? (# of accounts)"); // 0-10
 		numOfActiveBorrowingAccountLabel = new JLabel("How many active borrowing account do you have? (# of accounts)"); // 0-10
 		jobStatusLabel = new JLabel("What is your job status?"); // 0-10
-		incomeLabel = new JLabel("What is your annual income?"); // 0-10
+		incomeLabel = new JLabel("What is your annual income? USD"); // 0-10
+		lengthOfEmploymentLabel = new JLabel("What is your length of employment? Years"); // 0-10
 		
 		
 		Integer[] loadDurationChoice = {12,24,36, 48, 60, 72,84,96,108,120};
@@ -85,6 +95,12 @@ public class LoanApplicationPane extends JPanel {
 		}
 		
 		String[] jobStatus = {"Full Time", "Part Time", "Unemployed"};
+		
+		Integer[] zeroTo100 = new Integer[101];
+		for (int i = 0; i <= 100; i++) {
+			zeroTo100[i] = i;
+		}
+		
 		
 		loanAmountField = new JTextField(10);
 		loanAmountField.setInputVerifier(new IntegerVerifier());
@@ -102,6 +118,8 @@ public class LoanApplicationPane extends JPanel {
 		jobStatusField = new JComboBox<String>(jobStatus);
 		incomeField = new JTextField(10);
 		incomeField.setInputVerifier(new IntegerVerifier());
+		lengthOfEmploymentField = new JComboBox<Integer>(zeroTo100);
+		
 		
 		submit = new JButton("Apply");
 
@@ -120,47 +138,49 @@ public class LoanApplicationPane extends JPanel {
 				int open_act_il = (int) numOfActiveBorrowingAccountField.getSelectedItem();
 				String jobStatus = (String) jobStatusField.getSelectedItem();
 				double income = Double.parseDouble(incomeField.getText());
+				int lengthOfEmployment = (int) lengthOfEmploymentField.getSelectedItem();
 				
 				Customer currentCustomer = database.getCurrentCustomer();
 				LoanApplication currentLoanApplication = currentCustomer.addLoanApplication(loanAmount, loanDuration, pubRec, revol_bal ,
-						total_rev_hi_lim ,mo_sin_old_rev_tl_op ,inq_last_6mths , num_actv_bc_tl, num_actv_rev_tl, open_act_il, jobStatus, income);
-				
+						total_rev_hi_lim ,mo_sin_old_rev_tl_op ,inq_last_6mths , num_actv_bc_tl, num_actv_rev_tl, open_act_il,
+						jobStatus, income, lengthOfEmployment);
 				
 				database.setCurrentLoanApplication(currentLoanApplication);
 				database.updateCustomer(currentCustomer);
 				
-				
-			
 				ApplicationResult applicationResult = new ApplicationResult();
-				double pennCLKScore = applicationResult.userPennCLKScore(currentLoanApplication);
+				ArrayList<LoanFile> loan = applicationResult.fileReader("loan_raw_sample.csv");
 				
-				/*
-				String creditGrade = applicationResult.creditGrade(pennCLKScore);
-				Boolean isLoanApproved = applicationResult.isCustomerApprovedforLoan(pennCLKScore);
-				double interestRates = applicationResult.calculateInterestRates(pennCLKScore);
-				double amount = currentLoanApplication.getLoanAmount();
-				int loanPeriod = currentLoanApplication.getLoanDuration();
-				*/
+				DecimalFormat df = new DecimalFormat("#.00");
+				double pennCLKScore = ApplicationResult.userPennCLKScore(currentLoanApplication);
+				String creditGrade = ApplicationResult.creditGradeforUser(pennCLKScore);
+				boolean isLoanApproved = ApplicationResult.isCustomerApprovedforLoan(pennCLKScore);
+				double interestRates = ApplicationResult.calculateInterestRates(loan, currentLoanApplication);
+				double loanPrincipal = applicationResult.approvedLoanAmount(currentLoanApplication, applicationResult);
+				int loanPeriod = ApplicationResult.approvedLoanperiod(currentLoanApplication);
 				
-				/////// END ///////
-				Boolean isLoanApproved = true;
-				String creditGrade = "A";
-				double interestRates = 12;
-				double amount = currentLoanApplication.getLoanAmount();
-				int loanPeriod = currentLoanApplication.getLoanDuration();
+				// rounded to two decimals.
+				String loanPrincipalStr = df.format(loanPrincipal);
+				String interestRatesStr = df.format(interestRates);
+				
+				loanPrincipal = Double.parseDouble(loanPrincipalStr);
+				interestRates = Double.parseDouble(interestRatesStr);
+
 				
 				if (isLoanApproved) {
-					// mock data.
-					String message = "The loan of " + amount + " has been approved\n";
+					String message = "The loan of  has been approved\n";
+					message += "Your loan amount is " + loanPrincipalStr + "\n";
 					message += "Your credit grading is " + creditGrade + "\n";
-					message += "Your interest rates is " + interestRates + "\n";
+					message += "Your interest rates is " + interestRatesStr + "\n";
+					message += "Your loan period is " + loanPeriod + "\n";
+					
 
 					currentLoanApplication.setApproved(true);
 					JOptionPane.showMessageDialog(loanApplicationPanel, message );
 					
 					// convert the loan application into a new loan.
 					
-					Loan currentLoan = currentCustomer.addLoan(amount, interestRates, loanPeriod, creditGrade );
+					Loan currentLoan = currentCustomer.addLoan(loanPrincipal , interestRates, loanPeriod, creditGrade );
 					database.setCurrentLoan(currentLoan);
 					database.updateCustomer(currentCustomer);
 					
@@ -168,7 +188,10 @@ public class LoanApplicationPane extends JPanel {
 						applicationListener.loanApplicationOccured();
 					}
 				} else {
-					String message = "The loan of " + amount + " has been rejected\n";
+					String message = "The loan of has been rejected\n";
+					message += "Your credit grading is " + creditGrade + "\n";
+					message += "Your interest rates is " + interestRates + "\n";
+					message += "Your loan period is " + loanPeriod + "\n";
 					JOptionPane.showMessageDialog(loanApplicationPanel, message );
 				}
 			}
@@ -176,7 +199,10 @@ public class LoanApplicationPane extends JPanel {
 		
 		layoutComponent();
 	}
-
+	
+	/**
+	 * layout details for this screen.
+	 */
 	public void layoutComponent() {
 		setLayout(new GridBagLayout());
 
@@ -321,6 +347,17 @@ public class LoanApplicationPane extends JPanel {
 		gc.anchor = GridBagConstraints.LINE_START;
 		add(incomeField, gc);
 		
+		///////////// next row /////////////////
+		gc.gridy++;
+		
+		gc.gridx = 0;
+		gc.anchor = GridBagConstraints.LINE_START;
+		add(lengthOfEmploymentLabel, gc);
+		
+		gc.gridx = 1;
+		gc.anchor = GridBagConstraints.LINE_START;
+		add(lengthOfEmploymentField, gc);
+		
 		/////////// next row //////////////////
 		
 		gc.weightx = 1;
@@ -333,6 +370,11 @@ public class LoanApplicationPane extends JPanel {
 		
 		
 	}
+	
+	/**
+	 * setting form listener.
+	 * @param applicationListener
+	 */
 	public void setFormListener(LoanApplicationListener applicationListener) {
 		this.applicationListener = applicationListener;
 	}

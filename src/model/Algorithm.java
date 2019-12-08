@@ -2,29 +2,23 @@ package model;
 import java.util.ArrayList;
 
 import gui.LoanApplicationPane;
-import model.LoanApplication;
+
 
 public class Algorithm {
 
-	int pubRec; //instance variable for paymentHistory
-	public static final double PAYMENTHISTORYWEIGHTING = 0.35;
-	public static final double HIGHESTSCORE = 67.75;
 	public static final double HIGHESTCONVERSIONBASE = 850;
 	public static final double LOWESTCONVERSIONBASE = 300;
-	
+
 	/***
 	 * Customer's information in ArrayListwill be the parameter for Algorithm constructor.
 	 * @param userInput
 	 */
-//	public Algorithm (ArrayList<Customer> userInput) {
-//		this.userInput = userInput;	
-//	}
-	
+
 	/***
 	 * non-parameter constructor will be used here fore testing.
 	 */
 	public Algorithm () {
-		
+
 	}
 
 	/***
@@ -39,17 +33,17 @@ public class Algorithm {
 		double paymentHistoryScore = 0;
 
 		if (pubRec == 0) {
-			paymentHistoryScore = 75;
+			paymentHistoryScore = 770;
 		} else if (pubRec > 0 && pubRec < 6) {
-			paymentHistoryScore = 10;
+			paymentHistoryScore = 220;
 		} else if (pubRec > 5 && pubRec < 12) {
-			paymentHistoryScore = 15;
+			paymentHistoryScore = 330;
 		} else if (pubRec > 11 && pubRec < 24) {
-			paymentHistoryScore = 25;
+			paymentHistoryScore = 420;
 		} else if (pubRec > 23) {
-			paymentHistoryScore = 55;
+			paymentHistoryScore = 550;
 		}
-		
+
 		return paymentHistoryScore;
 	}
 
@@ -61,27 +55,27 @@ public class Algorithm {
 	 * @param total_rev_hi_lim: user's allocated revolving credit limit -> should be replaced by userInput instance.
 	 * @return amountsOwedScore
 	 */
-	
+
 	public static double amountsOwedScore (double revol_bal, double total_rev_hi_lim) {
 		double amountsOwedScore = 0;
 		double revolvingRatio = revol_bal / total_rev_hi_lim;
-		
+
 		if (revolvingRatio > 0.0 && revolvingRatio <= 0.20 ) {
-			amountsOwedScore = 65;
+			amountsOwedScore = 770;
 		} else if (revolvingRatio > 0.20 && revolvingRatio <= 0.40) {
-			amountsOwedScore = 50;
+			amountsOwedScore = 550;
 		} else if (revolvingRatio > 0.40 && revolvingRatio <= 0.60) {
-			amountsOwedScore = 40;
+			amountsOwedScore = 600;
 		} else if (revolvingRatio > 0.60 && revolvingRatio <= 0.80) {
-			amountsOwedScore = 25;
+			amountsOwedScore = 400;
 		} else if (revolvingRatio > 0.80) {
-			amountsOwedScore = 15;
+			amountsOwedScore = 300;
 		} else if (total_rev_hi_lim == 0) {
-			amountsOwedScore = 55;
+			amountsOwedScore = 700;
 		} else if (revolvingRatio == 0) {
-			amountsOwedScore = 30;
+			amountsOwedScore = 500;
 		}
-		
+
 		return amountsOwedScore;
 	}
 	/***
@@ -95,18 +89,18 @@ public class Algorithm {
 	public static double creditHistoryScore (int mo_sin_old_rev_tl_op) {
 		double creditHistoryScore = 0;
 		if (mo_sin_old_rev_tl_op < 12) {
-			creditHistoryScore = 12;
+			creditHistoryScore = 240;
 		} else if (mo_sin_old_rev_tl_op > 11 && mo_sin_old_rev_tl_op < 24) {
-			creditHistoryScore = 35;
+			creditHistoryScore = 400;
 		} else if (mo_sin_old_rev_tl_op > 23 && mo_sin_old_rev_tl_op < 48) {
-			creditHistoryScore = 60;
+			creditHistoryScore = 600;
 		} else if (mo_sin_old_rev_tl_op > 47) {
-			creditHistoryScore = 75;
+			creditHistoryScore = 760;
 		}
-		
+
 		return creditHistoryScore;
 	}
-	
+
 	/***
 	 * This is the fourth component of PennCLK Score model 
 	 * - Pursuit of New Credit 10%
@@ -117,22 +111,22 @@ public class Algorithm {
 	 */
 	public static double pursuitofNewCreditScore (int inq_last_6mths) {
 		double pursuitofNewCreditScore = 0;
-		
+
 		if (inq_last_6mths == 0) {
-			pursuitofNewCreditScore = 70;
+			pursuitofNewCreditScore = 760;
 		} else if (inq_last_6mths == 1) {
-			pursuitofNewCreditScore = 60;
+			pursuitofNewCreditScore = 600;
 		} else if (inq_last_6mths == 2) {
-			pursuitofNewCreditScore = 45;
+			pursuitofNewCreditScore = 450;
 		} else if (inq_last_6mths == 3) {
-			pursuitofNewCreditScore = 25;
+			pursuitofNewCreditScore = 380;
 		} else if (inq_last_6mths > 3) {
-			pursuitofNewCreditScore = 20;
+			pursuitofNewCreditScore = 300;
 		}
-		
+
 		return pursuitofNewCreditScore;
 	}
-	
+
 	/***
 	 * This is the fifth component of PennCLK Score model - creditMixScore 10%
 	 * The user will provide information about whether they have:
@@ -148,79 +142,83 @@ public class Algorithm {
 
 		double creditMixScore = 0;
 		double sumAccountNumbers = num_actv_bc_tl + num_actv_rev_tl + open_act_il;
-		
+
 		if (num_actv_bc_tl > 0 && num_actv_rev_tl > 0 && open_act_il > 0) {
 			if (sumAccountNumbers == 3) {
-				creditMixScore = 25;
-			} else if (sumAccountNumbers == 4){
-				creditMixScore = 50;
-			} else if (sumAccountNumbers == 5){
-				creditMixScore = 60;
-			} else if (sumAccountNumbers > 5){
-				creditMixScore = 50;
+				creditMixScore = 250;
+			} else if (sumAccountNumbers == 7){
+				creditMixScore = 500;
+			} else if (sumAccountNumbers == 10){
+				creditMixScore = 760;
+			} else if (sumAccountNumbers > 10){
+				creditMixScore = 500;
 			}
 		} else {
-			creditMixScore = 15; //if any one of accounts does not exist.
+			creditMixScore = 200; //if any one of accounts does not exist.
 		}
-		
+
 		return creditMixScore;
 	}
-	
+
 	/***
 	 * Example of how PennCLK Score is calculated
 	 * @param all of the required information from the user and from the database.
 	 * @return
 	 */
-	public static double debtToIncomeScore (LoanApplication loanApplication) {
-		double income = loanApplication.getIncome();
-		double loanAmount = loanApplication.getLoanAmount();
-		double dti = loanAmount / income;
-		int dtiScore = 0;
-		if (dti <= 1) {
-			dtiScore = 50;
-		} else if (dti > 1 && dti <= 2) {
-			dtiScore = 30;
-		} else if (dti > 2 && dti <= 3) {
-			dtiScore = 0;
-		} else if (dti > 3) {
-			dtiScore = -10000;
-		}
-		
-		return dtiScore;
-	}
-	
-	public static double jobScore (LoanApplication loanApplication) {
+
+
+	public static double jobScore (String jobStatus) {
 		int jobScore = 0;
-		if (loanApplication.getJobStatus.equals("Full Time")) {
-			jobScore = 30;
+		if (jobStatus.equals("Full Time")) {
+			jobScore = 760;
 		} else {
-			jobScore = 0;
+			jobScore = 340;
 		}
-		
+
 		return jobScore;
 	}
 	
-	public static double calculatePennCLKscore (LoanApplication loanApplication) {
+	public static double incomeScore (double AnnualIncome, double loanAmount) {
+		double incomeScore = 0;
+		if ((loanAmount / AnnualIncome) > 1 && (loanAmount / AnnualIncome) <= 1.5) {
+			incomeScore = 480;
+		} else if ((loanAmount / AnnualIncome) <= 1 && (loanAmount / AnnualIncome) > 0.5 ){
+			incomeScore = 600;
+		} else if ((loanAmount / AnnualIncome) <= 0.5 && (loanAmount / AnnualIncome) > 0 ){
+			incomeScore = 1050;
+		} else if ((loanAmount / AnnualIncome) > 1.5 && (loanAmount / AnnualIncome) < 2) {
+			incomeScore = 380;
+		} else if ((loanAmount / AnnualIncome) >= 2) {
+			incomeScore = -100000;
+		}
+		return incomeScore;
+	}
+
+	public static double calculatePennCLKscore (double annualIncome, double loanAmount, int pubRec, int mo_sin_old_rev_tl_op,  
+			 int inq_last_6mths, int num_actv_bc_tl, int num_actv_rev_tl,int open_act_il,
+			 double revol_bal, double total_rev_hi_lim, String jobStatus ) {
 		//each parameter within the method should be re-written later on as userInput[i] 
 		//where i is the index representing the original parameters of the methods as described in java doc above.
 		
-		double PennCLKScore = Algorithm.paymentHistoryScore(loanApplication.getPubRec()) * 0.30 + 
-				Algorithm.amountsOwedScore(loanApplication.getRevol_bal(), loanApplication.getTotal_rev_hi_lim()) * 0.30
-		+ Algorithm.creditHistoryScore(loanApplication.getMo_sin_old_rev_tl_op()) * 0.10 
-		+ Algorithm.pursuitofNewCreditScore(loanApplication.getInq_last_6mths()) * 0.10
-		+ Algorithm.creditMixScore(loanApplication.getNum_actv_bc_tl(), loanApplication.getNum_actv_rev_tl(), loanApplication.getOpen_act_il()) * 0.10 
-		+ Algorithm.debtToIncomeScore(loanApplication) * 0.05 + Algorithm.jobScore(loanApplication) * 0.05;
-		
-		
-		double finalPennCLKScore = (PennCLKScore / HIGHESTSCORE) * HIGHESTCONVERSIONBASE;
-		if (finalPennCLKScore < LOWESTCONVERSIONBASE) {
-			finalPennCLKScore = 300;
-			return Math.round(finalPennCLKScore);
+		double PennCLKScore = Algorithm.incomeScore(annualIncome, loanAmount) * 0.30 + 
+				Algorithm.paymentHistoryScore(pubRec) * 0.15 + Algorithm.amountsOwedScore(revol_bal, total_rev_hi_lim) * 0.15
+				+ Algorithm.creditHistoryScore(mo_sin_old_rev_tl_op) * 0.10 
+				+ Algorithm.pursuitofNewCreditScore(inq_last_6mths) * 0.10
+				+ Algorithm.creditMixScore(num_actv_bc_tl, num_actv_rev_tl, open_act_il) * 0.10 
+				+ Algorithm.jobScore(jobStatus) * 0.10;
+
+
+		if (PennCLKScore < LOWESTCONVERSIONBASE) {
+			PennCLKScore = 300;
+			return Math.round(PennCLKScore);
+		} else if (PennCLKScore > HIGHESTCONVERSIONBASE){
+			PennCLKScore = 850;
+			return Math.round(PennCLKScore);
 		} else {
-			return Math.round(finalPennCLKScore);
+			return Math.round(PennCLKScore);
 		}
-		
+
 	}
-	
+
 
 }

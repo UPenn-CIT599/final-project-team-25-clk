@@ -20,27 +20,27 @@ import model.Database;
 import model.Loan;
 import model.LoanApplication;
 
+/**
+ * Main containing frame for java swing.
+ *
+ */
 public class MainFrame extends JFrame {
 	// panels
 	private NewUserPane newUserPane;
 	private ExistingUserPane existingUserPane;
 	private LoanApplicationPane loanApplicationPane;
-	private ManageLoanPane manageLoanPane;
 	private LoanPane loanPane;
 	private JLabel welcome;
 	private JTabbedPane tabbedPane;
-	
-	
+		
 	// database and model.
 	private Database database;
-	private Customer currentCustomer;
 	
 	public MainFrame() {
 		super();
 		this.database = new Database();
 		
 		// load a list of customers to from file.
-		
 		try {
 			database.loadCustomerFromFile();
 		} catch (IOException e) {

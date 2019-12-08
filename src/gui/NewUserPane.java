@@ -8,27 +8,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import eventobject.LoanAnalysisListener;
 import eventobject.NewUserListener;
 import model.Customer;
 import model.Database;
 
+/**
+ * panel for creation of new user.
+ *
+ */
 public class NewUserPane extends JPanel {
 	private JLabel nameLabel;
 	private JLabel occupationLabel;
-	private JLabel annualIncomeLabel;
 	private Database database;
 	private NewUserListener newUserListener;
 
 	private JTextField nameField;
 	private JTextField occupationField;
-	private JTextField annualIncomeField;
 	private JButton submit;
 
 	public NewUserPane(Database database) {
@@ -62,7 +62,10 @@ public class NewUserPane extends JPanel {
 		});
 		layoutComponent();
 	}
-
+	
+	/**
+	 * 
+	 */
 	public void layoutComponent() {
 		setLayout(new GridBagLayout());
 

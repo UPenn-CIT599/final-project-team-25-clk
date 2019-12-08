@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -14,6 +15,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
@@ -23,6 +25,10 @@ import model.Customer;
 import model.Database;
 import model.Loan;
 
+/**
+ * a panel for the approved loan.
+ *
+ */
 public class LoanPane extends JPanel implements ActionListener {
 	private JComboBox<Item> loanSelection;
 	private LoanAnalysisListener selectionListener;
@@ -33,12 +39,14 @@ public class LoanPane extends JPanel implements ActionListener {
 	private Customer currentCustomer;
 	private Database database;
 	private Loan currentLoan;
+	private Container loanPanel;
 	
 	
 	public LoanPane(Database database) {		
 		setLayout(new BorderLayout());
 		this.database = database;
 		
+		loanPanel = this;
 		currentCustomer = database.getCurrentCustomer();
 		ArrayList<Loan> loans = currentCustomer.getLoans();
 		loanSelection = new JComboBox<Item>();
@@ -63,20 +71,33 @@ public class LoanPane extends JPanel implements ActionListener {
 			int loanId = _loan.getValue();
 			
 			this.currentLoan = currentCustomer.getLoan(loanId);
-			
+
 			database.setCurrentLoan(currentLoan);
 			repaintWithCurrentLoan(currentLoan);
 			
 			
 		} else if (e.getActionCommand().equals("Analyse")) {
 			
+			// forms 
 			double amount = Double.parseDouble(this.amount.getText());
 			String year = (String) this.year.getSelectedItem();
 			String month = (String) this.month.getSelectedItem();
 			
-			System.out.println(amount);
-			System.out.println(year);
-			System.out.println(month);
+			
+			/// LOAN SELECTED
+			/// principal of 100,000
+			// interest of 12%.
+			// loan peirod of 12 months.
+			double monthlyPayment = currentLoan.monthlyPayment();
+			
+			HashMap<Integer, Double> loanSchedule = currentLoan.mapMonthToPaymentDue();
+			int installmentNum = currentLoan.calcInstallNumFrDateSelected(year + month);
+			System.out.println(loanSchedule);
+			
+			String futurePrincipalDue = currentLoan.amountDue(installmentNum, amount);
+			
+			JOptionPane.showMessageDialog(loanPanel, futurePrincipalDue );
+			
 			/////// DAVID PART ////////////
 			
 			if (selectionListener != null) {
@@ -84,10 +105,13 @@ public class LoanPane extends JPanel implements ActionListener {
 				selectionListener.loanAnalysisOccured();
 			}
 		}
-		
-		
 	}
 	
+	
+	/**
+	 * refresh the loan panel when user picks a loan.
+	 * @param currentLoan
+	 */
 	public void repaintWithCurrentLoan(Loan currentLoan) {
 
 		JPanel loanInfo = new JPanel();
@@ -119,6 +143,16 @@ public class LoanPane extends JPanel implements ActionListener {
 		gc.gridx = 1;
 		gc.anchor = GridBagConstraints.LINE_START;
 		loanInfo.add(new JTextField(Double.toString(currentLoan.getPrincipal()), 20), gc);
+		
+		///////////// next row /////////////////
+		gc.gridy++;
+		gc.gridx = 0;
+		gc.anchor = GridBagConstraints.LINE_END;
+		loanInfo.add(new JLabel("Loan Period :     "), gc);
+		
+		gc.gridx = 1;
+		gc.anchor = GridBagConstraints.LINE_START;
+		loanInfo.add(new JTextField(Integer.toString(currentLoan.getLoanPeriod()), 20), gc);
 		
 		///////////// next row /////////////////
 		gc.gridy++;
@@ -227,6 +261,10 @@ public class LoanPane extends JPanel implements ActionListener {
 		
 	}
 	
+	/**
+	 * sets the form listener for loan panel.
+	 * @param selectionListener
+	 */
 	public void setFormListener(LoanAnalysisListener selectionListener) {
 		this.selectionListener = selectionListener;
 	}

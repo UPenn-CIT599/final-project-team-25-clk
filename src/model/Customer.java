@@ -1,24 +1,23 @@
 package model;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Scanner;
 
+/**
+ * The customer class. The customer will have many loan application and many loan.
+ * @author chian
+ *
+ */
 public class Customer implements Serializable {
 
 	private static final long serialVersionUID = -3634930368104200041L;
 	private int userId;
 	private String name;
 	private String occupation;
-	private String creditGrading;
 	private ArrayList<LoanApplication> loanApplications;
 	private ArrayList<Loan> loans;
-	private int currentPaymentMonth;
-	private int payOrDefault;
-	private HashMap<Integer, String> monthlyDefaultStatus;
+
 
 	/**
 	 * constructor for customer.
@@ -36,12 +35,6 @@ public class Customer implements Serializable {
 	
 	}
 	
-	// STORAGE FOR LOAN APPLICATION.
-	
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	/**
 	 * adding the loan application into current customer.
 	 * @param loanAmount
@@ -50,20 +43,28 @@ public class Customer implements Serializable {
 	 */
 	public LoanApplication addLoanApplication(double loanAmount, int loanDuration, int pubRec ,double revol_bal ,
 			double total_rev_hi_lim , int mo_sin_old_rev_tl_op , int inq_last_6mths ,int num_actv_bc_tl,int num_actv_rev_tl, int open_act_il,
-			String jobStatus,double income) {
+			String jobStatus,double income, int lengthOfEmployment) {
 
 		Date today = new Date();
 		int loanApplicationId = loanApplications.size();
 		
 		LoanApplication loanApplication = new LoanApplication(loanApplicationId, loanAmount, 
 				loanDuration, pubRec, revol_bal, total_rev_hi_lim, mo_sin_old_rev_tl_op, 
-				inq_last_6mths, num_actv_bc_tl, num_actv_rev_tl, open_act_il,  today, jobStatus, income);
+				inq_last_6mths, num_actv_bc_tl, num_actv_rev_tl, open_act_il,  today, jobStatus, income, lengthOfEmployment);
 		
 		loanApplications.add(loanApplication);
 		
 		return loanApplication;
 	}
 	
+	/**
+	 * set the name of customre.
+	 * @param name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	/**
 	 * get a specific loan application, by index.
 	 * @param index
@@ -113,8 +114,8 @@ public class Customer implements Serializable {
 	 */
 	public Loan addLoan(double amount, double interestRates, int loanPeriod, String creditGrade ) {
 		int loanId = loans.size();
-		
-		Loan loan = new Loan(loanId, amount, interestRates, loanPeriod, creditGrade);
+		Date today = new Date();
+		Loan loan = new Loan(loanId, amount, interestRates, loanPeriod, creditGrade, today);
 		loans.add(loan);
 		
 		return loan;
@@ -144,39 +145,27 @@ public class Customer implements Serializable {
 		return loans;
 	}
 	
-	/// Miscellaneous
-	
-
+	/**
+	 * get the occupation of customer.
+	 * @return
+	 */
 	public String getOccupation() {
 		return occupation;
 	}
 
 
-	public String getCreditGrading() {
-		return creditGrading;
-	}
-
-
-	public int getCurrentPaymentMonth() {
-		return currentPaymentMonth;
-	}
-
-
-	public int getPayOrDefault() {
-		return payOrDefault;
-	}
-
-
-	public HashMap<Integer, String> getMonthlyDefaultStatus() {
-		return monthlyDefaultStatus;
-	}
-
-
+	/**
+	 * get the name of the customer.
+	 * @return
+	 */
 	public String getName() {
 		return name;
 	}
 
-
+	/**
+	 * get the user id of customer.
+	 * @return
+	 */
 	public int getUserId() {
 		return userId;
 	}
