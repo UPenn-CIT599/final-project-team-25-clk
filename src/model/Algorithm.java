@@ -18,7 +18,7 @@ public class Algorithm {
 	 * non-parameter constructor will be used here fore testing.
 	 */
 	
-	//This is the constructor
+	//This is the constructor . added by chian.
 	public Algorithm () {
 
 	}
