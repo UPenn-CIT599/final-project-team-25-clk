@@ -7,11 +7,16 @@ import java.util.Scanner;
 
 
 public class ApplicationResult {
-
-	//File file = new File("loan_raw_sample.csv");
 	ArrayList<String> columns = new ArrayList<>();
 	ArrayList<LoanFile> loan = new ArrayList<>();
 
+	/***
+	 * This method reads the datafile (loan_original.csv) and stores LoanFile object into
+	 * the arraylist called loan.
+	 * 
+	 * @param fileName: the name of the file to be read
+	 * @return arraylist with LoanFile object
+	 */
 	public ArrayList<LoanFile> fileReader(String fileName) {
 
 		File fw = new File(fileName);
@@ -43,6 +48,10 @@ public class ApplicationResult {
 		return loan;
 	}
 
+	/***
+	 * getter method for loan instance variable 
+	 * @return arraylist with LoanFile object
+	 */
 	public ArrayList<LoanFile> getAllLoanData() {
 		return loan;
 	}
@@ -75,15 +84,6 @@ public class ApplicationResult {
 				la.getPubRec(), la.getMo_sin_old_rev_tl_op(), la.getInq_last_6mths(), 
 				la.getNum_actv_bc_tl(), la.getNum_actv_rev_tl(), 
 				la.getOpen_act_il(), la.getRevol_bal(), la.getTotal_rev_hi_lim(), la.getJobStatus());
-		
-//		System.out.println("Income " + la.getIncome());
-//		System.out.println("Loan " + la.getLoanAmount());
-//		System.out.println("Inq 6 " +la.getInq_last_6mths());
-//		System.out.println("getNumb_actv_bc " + la.getNum_actv_bc_tl());
-//		System.out.println("revol " + la.getRevol_bal());
-//		System.out.println("total " + la.getTotal_rev_hi_lim());
-//		
-//		System.out.println("INCOME SCORE " +  Algorithm.incomeScore(la.getIncome(), la.getLoanAmount()));
 		
 		return userPennCLKScore;
 	}
@@ -128,12 +128,12 @@ public class ApplicationResult {
 		return isCustomerApprovedforLoan;
 	}
 
-	/**
-	 * calculate interest rates given credit scores
-	 * @param pennCLKScore
-	 * @return
+	/***
+	 * This is a helper method to ensure that no missing data is read
+	 * @param file: LoanFile object
+	 * @param loanList: arraylist with LoanFile object
+	 * @return true if any data is missing within the read file.
 	 */
-
 	public static boolean isDataMissing (LoanFile file, ArrayList<LoanFile> loanList) {
 
 		if (file.getIncomeAmount().isEmpty() || file.getLoanAmount().isEmpty() || file.getPubRec().isEmpty() ||
@@ -147,6 +147,11 @@ public class ApplicationResult {
 		return false;
 	}
 
+	/**
+	 * calculate interest rates given credit scores
+	 * @param pennCLKScore
+	 * @return
+	 */
 
 	public static double calculateInterestRates (ArrayList<LoanFile> loan, LoanApplication la) {
 
@@ -169,7 +174,10 @@ public class ApplicationResult {
 
 
 		/***
-		 * This is from the original datafile
+		 * This is from the original datafile. Among non-missed data, it calculates the credit grade for every individual
+		 * then calculates the average interest rate of those within the same credit grade, and then
+		 * the appropriate weight adjustment is applied to this average interest rate for each grade, and finally assigned
+		 * to the user.
 		 */
 		
 		for (LoanFile lf : loan) {
@@ -179,90 +187,70 @@ public class ApplicationResult {
 				pennCLKScore = Algorithm.calculatePennCLKscore(Double.parseDouble(lf.getIncomeAmount()), Double.parseDouble(lf.getLoanAmount()), Integer.parseInt(lf.getPubRec()), Integer.parseInt(lf.getMo_sin_old_rev_tl_op()),
 						Integer.parseInt(lf.getInq_last_6mths()), Integer.parseInt(lf.getNum_actv_bc_tl()), Integer.parseInt(lf.getNum_actv_rev_tl()), 
 						Integer.parseInt(lf.getOpen_act_il()), Double.parseDouble(lf.getRevol_bal()), Double.parseDouble(lf.getTotal_rev_hi_lim()), "Full Time");
-//				System.out.println("Income " + Double.parseDouble(lf.getIncomeAmount()));
-//				System.out.println("Loan " + Double.parseDouble(lf.getLoanAmount()));
-//				System.out.println("Inq 6 " + Double.parseDouble(lf.getInq_last_6mths()));
-//				System.out.println("getNumb_actv_bc " + Double.parseDouble(lf.getNum_actv_bc_tl()));
-//				System.out.println("revol " + Double.parseDouble(lf.getRevol_bal()));
-//				System.out.println("total " + Double.parseDouble(lf.getTotal_rev_hi_lim()));
-				
+			
 				
 				if (ApplicationResult.creditGradeforUser(pennCLKScore).equals("A")) {
 					sumAInterestRate = sumAInterestRate + Double.parseDouble(lf.getInterestRate());
 					counterA ++;
 					averageAInterestRate = sumAInterestRate / counterA;
-					//System.out.println("A rate " + averageAInterestRate);
-					//System.out.println("pennCLKScore A " + pennCLKScore);
 
 				} else if (ApplicationResult.creditGradeforUser(pennCLKScore).equals("B")) {
 					sumBInterestRate = sumBInterestRate + Double.parseDouble(lf.getInterestRate());
 					counterB ++;
 					averageBInterestRate = sumBInterestRate / counterB;
-					//System.out.println("B rate " + averageBInterestRate);
-					//System.out.println("pennCLKScore B " + pennCLKScore);
-					
+
 				} else if (ApplicationResult.creditGradeforUser(pennCLKScore).equals("C")) {
 					sumCInterestRate = sumCInterestRate + Double.parseDouble(lf.getInterestRate());
 					counterC ++;
 					averageCInterestRate = sumCInterestRate / counterC;
-					//System.out.println("C rate " + averageCInterestRate);
-					//System.out.println("pennCLKScore C " + pennCLKScore);
-					
-					
+
 				} else if (ApplicationResult.creditGradeforUser(pennCLKScore).equals("D")) {
 					sumDInterestRate = sumDInterestRate + Double.parseDouble(lf.getInterestRate());
 					counterD ++;
 					averageDInterestRate = sumDInterestRate / counterD;
-					//System.out.println("D rate " + averageDInterestRate);
-					//System.out.println("pennCLKScore D " + pennCLKScore);
 
 				} else if (ApplicationResult.creditGradeforUser(pennCLKScore).equals("E")) {
 					sumEInterestRate = sumEInterestRate + Double.parseDouble(lf.getInterestRate());
 					counterE ++;
 					averageEInterestRate = sumEInterestRate / counterE;
-					//System.out.println("E rate " + averageEInterestRate);
-					//System.out.println("pennCLKScore E " + pennCLKScore);
+
 				} 
-				//System.out.println("");
 			}
 		}
-		
-	
 
 		if (ApplicationResult.creditGradeforUser(ApplicationResult.userPennCLKScore(la)).equals("A")) {
 			double ArateUserRate = averageAInterestRate * 
 					(701 / ApplicationResult.userPennCLKScore(la));
-			return ArateUserRate;
+			return ArateUserRate * 0.30;
 
 		} else if (ApplicationResult.creditGradeforUser(ApplicationResult.userPennCLKScore(la)).equals("B")) {
 			double BrateUserRate = averageBInterestRate * 
 					(601 / ApplicationResult.userPennCLKScore(la));
-			return BrateUserRate;
+			return BrateUserRate * 0.50;
 
 		} else if (ApplicationResult.creditGradeforUser(ApplicationResult.userPennCLKScore(la)).equals("C")) {
 			double CrateUserRate = averageCInterestRate * 
 					(501 / ApplicationResult.userPennCLKScore(la));
-			return CrateUserRate;
+			return CrateUserRate * 0.70;
 
 		} else if (ApplicationResult.creditGradeforUser(ApplicationResult.userPennCLKScore(la)).equals("D")) {
 			double DrateUserRate = averageDInterestRate * 
 					(401 / ApplicationResult.userPennCLKScore(la));
-			return DrateUserRate;
+			return DrateUserRate * 0.90;
 
 		} else {
 			double ErateUserRate = averageEInterestRate * 
 					(301 / ApplicationResult.userPennCLKScore(la));
 			return ErateUserRate;
 		}
-
-
 	}
 
 	/***
-	 * approvedLoanperiod should be denoted in the number of "months" not "years"
-	 * @param la
-	 * @param result
-	 * @return
+	 * 
+	 * This method ensures that the user cannot be granted inappropriate loan amount
+	 * @param la: LoanApplication object
+	 * @param result: ApplicationResult object
+	 * @return the theoretical maximum loan amount that the user can acquire.
 	 */
 	public double approvedLoanAmount (LoanApplication la, ApplicationResult result) {
 		double income = la.getIncome() / 12;
@@ -273,7 +261,6 @@ public class ApplicationResult {
 
 		double dti = repaymentAmount / income;
 
-
 		if (dti > 0.5) {
 			return Math.round( (income * 0.50 * 12) * 2) / 2;
 
@@ -282,6 +269,11 @@ public class ApplicationResult {
 		}
 	}
 
+	/***
+	 * This method ensures that the user cannot be granted inappropriate loan period
+	 * @param loanApplication: LoanApplication object
+	 * @return the theoretical maximum loan period that the user can be granted.
+	 */
 	public static int approvedLoanperiod (LoanApplication loanApplication) {
 		if (loanApplication.getLoanDuration() < loanApplication.getLengthOfEmployment() * 12) {
 			return loanApplication.getLoanDuration();
