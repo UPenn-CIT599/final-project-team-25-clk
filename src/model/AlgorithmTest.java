@@ -18,30 +18,33 @@ public class AlgorithmTest {
 
 	@Test
 	public void testPaymentHistoryScore() {
-		assertEquals(220, algo.paymentHistoryScore(pubRec),0);
+		assertEquals(0, algo.paymentHistoryScore(pubRec),0);
 	}
 
 	@Test
 	public void testAmountsOwedScore() {
-		assertEquals(770, algo.amountsOwedScore(revol_bal, total_rev_hi_lim), 0);
+		assertEquals(900, algo.amountsOwedScore(revol_bal, total_rev_hi_lim), 0);
 	}
 
 	@Test
 	public void testCreditHistoryScore() {
-		assertEquals(760, algo.creditHistoryScore(mo_sin_old_rev_tl_op),0);
+		assertEquals(800, algo.creditHistoryScore(mo_sin_old_rev_tl_op),0);
 	}
 
 	@Test
 	public void testPursuitofNewCreditScore() {
-		assertEquals(450, algo.pursuitofNewCreditScore(inq_last_6mths),0);
+		assertEquals(400, algo.pursuitofNewCreditScore(inq_last_6mths),0);
 	}
 
 	@Test
 	public void testCreditMixScore() {
-		assertEquals(250, algo.creditMixScore(num_actv_bc_tl, num_actv_rev_tl, open_act_il),0);
+		assertEquals(100, algo.creditMixScore(num_actv_bc_tl, num_actv_rev_tl, open_act_il),0);
 	}
 
-
+	@Test
+	public void testJobScore() {
+		assertEquals(800, algo.jobScore("Full Time"),0);
+	}
 }
 
 

@@ -22,32 +22,9 @@ public class Algorithm {
 
 	}
 
-	
+
 	/***
-	 * This is the first component of calculating PennCLK score. According to the user and the datafile's loan amount
-	 * and annual income, it will provide scores differently.
-	 * @param AnnualIncome
-	 * @param loanAmount: applied loan amount
-	 * @return incomeScore
-	 */
-	public static double incomeScore (double AnnualIncome, double loanAmount) {
-		double incomeScore = 0;
-		if ((loanAmount / AnnualIncome) > 1 && (loanAmount / AnnualIncome) <= 1.5) {
-			incomeScore = 480;
-		} else if ((loanAmount / AnnualIncome) <= 1 && (loanAmount / AnnualIncome) > 0.5 ){
-			incomeScore = 600;
-		} else if ((loanAmount / AnnualIncome) <= 0.5 && (loanAmount / AnnualIncome) > 0 ){
-			incomeScore = 1050;
-		} else if ((loanAmount / AnnualIncome) > 1.5 && (loanAmount / AnnualIncome) < 2) {
-			incomeScore = 380;
-		} else if ((loanAmount / AnnualIncome) >= 2) {
-			incomeScore = -100000;
-		}
-		return incomeScore;
-	}
-	
-	/***
-	 * This is the second component of PennCLKscore
+	 * This is the first component of PennCLKscore
 	 * Payment History represents the number of months since the most
 	 * recent derogatory public record
 	 * @param pubRec = public record
@@ -58,22 +35,22 @@ public class Algorithm {
 		double paymentHistoryScore = 0;
 
 		if (pubRec == 0) {
-			paymentHistoryScore = 770;
+			paymentHistoryScore = 900;
 		} else if (pubRec > 0 && pubRec < 6) {
-			paymentHistoryScore = 220;
+			paymentHistoryScore = 0;
 		} else if (pubRec > 5 && pubRec < 12) {
-			paymentHistoryScore = 330;
+			paymentHistoryScore = 300;
 		} else if (pubRec > 11 && pubRec < 24) {
-			paymentHistoryScore = 420;
+			paymentHistoryScore = 500;
 		} else if (pubRec > 23) {
-			paymentHistoryScore = 550;
+			paymentHistoryScore = 700;
 		}
 
 		return paymentHistoryScore;
 	}
 
 	/***
-	 * This is the third component of PennCLKscore.
+	 * This is the second component of PennCLKscore.
 	 * This represents the ratio of the user's revolving credit over his allocated
 	 * maximum revolving limit.
 	 * @param revol_bal: user's current maximum revolving credit
@@ -86,17 +63,17 @@ public class Algorithm {
 		double revolvingRatio = revol_bal / total_rev_hi_lim;
 
 		if (revolvingRatio > 0.0 && revolvingRatio <= 0.20 ) {
-			amountsOwedScore = 770;
+			amountsOwedScore = 900;
 		} else if (revolvingRatio > 0.20 && revolvingRatio <= 0.40) {
-			amountsOwedScore = 550;
-		} else if (revolvingRatio > 0.40 && revolvingRatio <= 0.60) {
-			amountsOwedScore = 600;
-		} else if (revolvingRatio > 0.60 && revolvingRatio <= 0.80) {
-			amountsOwedScore = 400;
-		} else if (revolvingRatio > 0.80) {
-			amountsOwedScore = 300;
-		} else if (total_rev_hi_lim == 0) {
 			amountsOwedScore = 700;
+		} else if (revolvingRatio > 0.40 && revolvingRatio <= 0.60) {
+			amountsOwedScore = 300;
+		} else if (revolvingRatio > 0.60 && revolvingRatio <= 0.80) {
+			amountsOwedScore = 100;
+		} else if (revolvingRatio > 0.80) {
+			amountsOwedScore = -10000000;
+		} else if (total_rev_hi_lim == 0) {
+			amountsOwedScore = -10000000;
 		} else if (revolvingRatio == 0) {
 			amountsOwedScore = 500;
 		}
@@ -104,7 +81,7 @@ public class Algorithm {
 		return amountsOwedScore;
 	}
 	/***
-	 * This is the fourth component of PennCLK Score model
+	 * This is the third component of PennCLK Score model
 	 * This represents the number of months it passed since the user created his first
 	 * revolving credit account
 	 * @param mo_sin_old_rev_tl_op: number of months since
@@ -114,20 +91,20 @@ public class Algorithm {
 	public static double creditHistoryScore (int mo_sin_old_rev_tl_op) {
 		double creditHistoryScore = 0;
 		if (mo_sin_old_rev_tl_op < 12) {
-			creditHistoryScore = 240;
+			creditHistoryScore = 200;
 		} else if (mo_sin_old_rev_tl_op > 11 && mo_sin_old_rev_tl_op < 24) {
 			creditHistoryScore = 400;
 		} else if (mo_sin_old_rev_tl_op > 23 && mo_sin_old_rev_tl_op < 48) {
 			creditHistoryScore = 600;
 		} else if (mo_sin_old_rev_tl_op > 47) {
-			creditHistoryScore = 760;
+			creditHistoryScore = 800;
 		}
 
 		return creditHistoryScore;
 	}
 
 	/***
-	 * This is the fifth component of PennCLK Score model 
+	 * This is the fourth component of PennCLK Score model 
 	 * This represents how many inquiries the user has made for borrowing
 	 * in the last 6 months
 	 * @param inq_last_6mths
@@ -137,22 +114,22 @@ public class Algorithm {
 		double pursuitofNewCreditScore = 0;
 
 		if (inq_last_6mths == 0) {
-			pursuitofNewCreditScore = 760;
+			pursuitofNewCreditScore = 800;
 		} else if (inq_last_6mths == 1) {
 			pursuitofNewCreditScore = 600;
 		} else if (inq_last_6mths == 2) {
-			pursuitofNewCreditScore = 450;
+			pursuitofNewCreditScore = 400;
 		} else if (inq_last_6mths == 3) {
-			pursuitofNewCreditScore = 380;
+			pursuitofNewCreditScore = 200;
 		} else if (inq_last_6mths > 3) {
-			pursuitofNewCreditScore = 300;
+			pursuitofNewCreditScore = 0;
 		}
 
 		return pursuitofNewCreditScore;
 	}
 
 	/***
-	 * This is the sixth component of PennCLK Score model
+	 * This is the fifth component of PennCLK Score model
 	 * The user will provide information about whether they have:
 	 * 1) check cards (= bank cards)
 	 * 2) credit cards (=revolving credit)
@@ -171,23 +148,23 @@ public class Algorithm {
 
 		if (num_actv_bc_tl > 0 && num_actv_rev_tl > 0 && open_act_il > 0) {
 			if (sumAccountNumbers == 3) {
-				creditMixScore = 250;
+				creditMixScore = 100;
 			} else if (sumAccountNumbers == 7){
 				creditMixScore = 500;
 			} else if (sumAccountNumbers == 10){
-				creditMixScore = 760;
+				creditMixScore = 850;
 			} else if (sumAccountNumbers > 10){
-				creditMixScore = 500;
+				creditMixScore = 200;
 			}
 		} else {
-			creditMixScore = 200; //if any one of accounts does not exist.
+			creditMixScore = 0; //if any one of accounts does not exist.
 		}
 
 		return creditMixScore;
 	}
 
 	/***
-	 * This is the seventh component of PennCLK Score model
+	 * This is the sixth component of PennCLK Score model
 	 * The user will provide information whether he/she has FT, PT or unemployed
 	 * If the user has FT job, he/she will be assigned the highest score.
 	 * @param jobStatus of the user
@@ -199,11 +176,11 @@ public class Algorithm {
 	public static double jobScore (String jobStatus) {
 		int jobScore = 0;
 		if (jobStatus.equals("Full Time")) {
-			jobScore = 760;
+			jobScore = 800;
 		} else if (jobStatus.equals("Part Time")) {
 			jobScore = 500;
 		} else {
-			jobScore = 340;
+			jobScore = 300;
 		}
 
 		return jobScore;
@@ -221,12 +198,12 @@ public class Algorithm {
 		//each parameter within the method should be re-written later on as userInput[i] 
 		//where i is the index representing the original parameters of the methods as described in java doc above.
 		
-		double PennCLKScore = Algorithm.incomeScore(annualIncome, loanAmount) * 0.30 + 
-				Algorithm.paymentHistoryScore(pubRec) * 0.15 + Algorithm.amountsOwedScore(revol_bal, total_rev_hi_lim) * 0.15
+		double PennCLKScore = 
+				Algorithm.paymentHistoryScore(pubRec) * 0.20 + Algorithm.amountsOwedScore(revol_bal, total_rev_hi_lim) * 0.25
 				+ Algorithm.creditHistoryScore(mo_sin_old_rev_tl_op) * 0.10 
-				+ Algorithm.pursuitofNewCreditScore(inq_last_6mths) * 0.10
+				+ Algorithm.pursuitofNewCreditScore(inq_last_6mths) * 0.15
 				+ Algorithm.creditMixScore(num_actv_bc_tl, num_actv_rev_tl, open_act_il) * 0.10 
-				+ Algorithm.jobScore(jobStatus) * 0.10;
+				+ Algorithm.jobScore(jobStatus) * 0.20;
 
 
 		if (PennCLKScore < LOWESTCONVERSIONBASE) {
@@ -240,6 +217,4 @@ public class Algorithm {
 		}
 
 	}
-
-
 }

@@ -136,7 +136,6 @@ public class Loan implements Serializable {
 			mYear = Integer.parseInt(tempNumber);
 			mMonth = Integer.parseInt(currentDate) - mYear * 100;	
 		}
-		System.out.println("year of current date is " + mYear);
 
 		int nMonth = 0;
 		int nYear = 0;
@@ -151,8 +150,7 @@ public class Loan implements Serializable {
 		monthDifference = nMonth - mMonth;
 		yearToMonths = yearDifference * 12;	
 		installNum = monthDifference + yearToMonths;
-		System.out.println("diff in year converted to months is " + yearToMonths);
-		System.out.println("diff in months is " + monthDifference);
+
 		
 		return installNum;
 	}
@@ -251,7 +249,9 @@ public class Loan implements Serializable {
 			}	
 		}
 		else {
-			message3 = "You have paid " + amountWillingToPay + " out of " + new DecimalFormat("#.00").format(totalAmtDueForPayback) + " that is due.";
+			message3 = "Out of " + new DecimalFormat("#.00").format(totalAmtDueForPayback) + ", if you pay " + amountWillingToPay + ", " 
+					+ "you are left with " + (Double.parseDouble(new DecimalFormat("#.00").format(totalAmtDueForPayback)) - amountWillingToPay) + ".";
+
 			return message3;
 		}
 	}	

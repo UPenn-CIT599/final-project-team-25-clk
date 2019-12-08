@@ -1,6 +1,9 @@
 package model;
 public class LoanFile {
 
+	/***
+	 * @author YEONG HUN LUKE LEE
+	 */
 	private String pubRec, mo_sin_old_rev_tl_op, inq_last_6mths, num_actv_bc_tl, 
 	num_actv_rev_tl, open_act_il, revol_bal, total_rev_hi_lim, interestRate, incomeAmount, loanAmount;
 
