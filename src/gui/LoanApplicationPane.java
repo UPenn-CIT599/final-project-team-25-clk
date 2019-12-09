@@ -182,8 +182,8 @@ public class LoanApplicationPane extends JPanel {
 					currentLoanApplication.setApproved(true);
 					JOptionPane.showMessageDialog(loanApplicationPanel, message );
 					
-					if (Double.parseDouble(loanPrincipalStr) < loanAmount) {
-						Loan currentLoan = currentCustomer.addLoan(Double.parseDouble(loanPrincipalStr), interestRates, loanPeriod, creditGrade );
+					if (loanPrincipal < loanAmount) {
+						Loan currentLoan = currentCustomer.addLoan(loanPrincipal, interestRates, loanPeriod, creditGrade );
 						database.setCurrentLoan(currentLoan);
 						database.updateCustomer(currentCustomer);
 					} else {

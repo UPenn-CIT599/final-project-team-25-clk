@@ -249,8 +249,8 @@ public class Loan implements Serializable {
 			}	
 		}
 		else {
-			message3 = "Out of " + new DecimalFormat("#.00").format(totalAmtDueForPayback) + ", if you pay " + amountWillingToPay + ", " 
-					+ "you are left with " + (Double.parseDouble(new DecimalFormat("#.00").format(totalAmtDueForPayback)) - amountWillingToPay) + ".";
+			message3 = "Out of the total balance " + new DecimalFormat("#.00").format(totalAmtDueForPayback) + ", if you pay " + amountWillingToPay + ", " 
+					+ "your remaining balance is " + (Double.parseDouble(new DecimalFormat("#.00").format(totalAmtDueForPayback)) - amountWillingToPay) + ".";
 
 			return message3;
 		}

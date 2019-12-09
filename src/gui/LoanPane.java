@@ -76,7 +76,7 @@ public class LoanPane extends JPanel implements ActionListener {
 			repaintWithCurrentLoan(currentLoan);
 			
 			
-		} else if (e.getActionCommand().equals("Analyse")) {
+		} else if (e.getActionCommand().equals("Analyze")) {
 			
 			// forms 
 			double amount = Double.parseDouble(this.amount.getText());
@@ -88,9 +88,7 @@ public class LoanPane extends JPanel implements ActionListener {
 			HashMap<Integer, Double> loanSchedule = currentLoan.mapMonthToPaymentDue();
 			int installmentNum = currentLoan.calcInstallNumFrDateSelected(year + month);
 			
-			
 			String futurePrincipalDue = currentLoan.amountDue(installmentNum, amount);
-			
 			JOptionPane.showMessageDialog(loanPanel, futurePrincipalDue );
 			
 			/////// DAVID PART ////////////
@@ -230,10 +228,10 @@ public class LoanPane extends JPanel implements ActionListener {
 		gc.gridy++;
 		gc.gridx = 1;
 		gc.anchor = GridBagConstraints.LINE_START;
-		analyseBtn = new JButton("Analyse");
+		analyseBtn = new JButton("Analyze");
 		
 		analyseBtn.addActionListener(this);
-		analyseBtn.setActionCommand("Analyse");
+		analyseBtn.setActionCommand("Analyze");
 		loanInfo.add(analyseBtn, gc);
 		
 		///////////// next row /////////////////
